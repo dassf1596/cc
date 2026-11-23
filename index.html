@@ -23,7 +23,7 @@
     }
 
     .container {
-      max-width: 860px;
+      max-width: 880px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -52,10 +52,48 @@
       gap: 12px;
     }
 
+    .title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
     h1 {
       font-size: 20px;
       font-weight: 600;
       color: #f0f6fc;
+    }
+
+    .sync-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 9px;
+      border-radius: 999px;
+      border: 1px solid #30363d;
+      background-color: #0d1117;
+      color: #8b949e;
+    }
+
+    .sync-pill.online {
+      border-color: rgba(63, 185, 80, 0.45);
+      background-color: rgba(63, 185, 80, 0.12);
+      color: #3fb950;
+    }
+
+    .sync-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #8b949e;
+    }
+
+    .sync-pill.online .sync-dot {
+      background-color: #3fb950;
+      box-shadow: 0 0 6px #3fb950;
     }
 
     .subtitle {
@@ -215,7 +253,7 @@
 
     .table-header {
       display: grid;
-      grid-template-columns: 28px 1fr auto auto;
+      grid-template-columns: 28px 1fr auto auto auto;
       align-items: center;
       gap: 12px;
       padding: 10px 16px;
@@ -228,7 +266,7 @@
 
     .list-row {
       display: grid;
-      grid-template-columns: 28px 1fr auto auto;
+      grid-template-columns: 28px 1fr auto auto auto;
       align-items: center;
       gap: 12px;
       padding: 11px 16px;
@@ -247,7 +285,7 @@
     }
 
     .list-row.done {
-      opacity: 0.5;
+      opacity: 0.48;
     }
 
     .list-row input[type="checkbox"] {
@@ -267,8 +305,8 @@
     }
 
     .item-name {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 13px;
+      font-size: 13.5px;
+      font-weight: 500;
       color: #e6edf3;
       word-break: break-word;
     }
@@ -290,12 +328,16 @@
       white-space: nowrap;
     }
 
-    .item-count {
+    .item-count, .item-sb {
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 12px;
       color: #8b949e;
       text-align: right;
       white-space: nowrap;
+    }
+
+    .item-sb {
+      min-width: 64px;
     }
 
     .item-stacks {
@@ -304,7 +346,7 @@
       font-weight: 600;
       color: #58a6ff;
       text-align: right;
-      min-width: 84px;
+      min-width: 82px;
       white-space: nowrap;
     }
 
@@ -357,7 +399,7 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 640px) {
       body { padding: 10px; }
       .header-card { padding: 14px; }
       .table-header, .list-row {
@@ -365,7 +407,7 @@
         gap: 8px;
         padding: 10px 12px;
       }
-      .col-count, .item-count { display: none; }
+      .col-count, .item-count, .col-sb, .item-sb { display: none; }
       .item-stacks { min-width: 72px; }
     }
   </style>
@@ -375,8 +417,14 @@
     <div class="card header-card">
       <div class="header-top">
         <div>
-          <h1>เช็คลิสต์วัสดุ: Unnamed.json</h1>
-          <p class="subtitle">60 ชนิดไอเทม • รวม 20,080 ชิ้น • ปัดเศษขึ้นเป็น stack (มาตรฐาน Vanilla: 64 / 16 / 1)</p>
+          <div class="title-row">
+            <h1>เช็คลิสต์วัสดุ: Unnamed</h1>
+            <span id="syncPill" class="sync-pill">
+              <span class="sync-dot"></span>
+              <span id="syncText">โหมดเครื่องเดียว</span>
+            </span>
+          </div>
+          <p class="subtitle">60 ชนิดไอเทม • รวม 20,080 ชิ้น • อ้างอิง Litematica Material List (ปัดเศษขึ้นเป็น stack)</p>
         </div>
         <div class="actions">
           <button id="shareLinkBtn" type="button" class="btn btn-primary">แชร์ลิงก์ความคืบหน้า</button>
@@ -396,7 +444,7 @@
       </div>
 
       <div class="controls">
-        <input id="searchInput" type="text" class="search-input" placeholder="ค้นหาชื่อไอเทม เช่น chest, spruce, glass..." />
+        <input id="searchInput" type="text" class="search-input" placeholder="ค้นหาชื่อไอเทม เช่น Chest, Spruce, Redstone..." />
 
         <div class="filter-group">
           <button data-filter="all" class="filter-btn active" type="button">ทั้งหมด</button>
@@ -417,89 +465,98 @@
         <span style="text-align:center;">✓</span>
         <span>ไอเทม</span>
         <span class="col-count" style="text-align:right;">จำนวนจริง</span>
-        <span style="text-align:right; min-width:84px;">ต้องเตรียม</span>
+        <span class="col-sb" style="text-align:right; min-width:64px;">Total (sb)</span>
+        <span style="text-align:right; min-width:82px;">ต้องเตรียม</span>
       </div>
       <div id="listContainer"></div>
       <div id="emptyState" class="empty-state">ไม่พบรายการที่ตรงกับเงื่อนไข</div>
     </div>
 
     <p class="footnote">
-      * ข้อมูล <code>id</code> และ <code>count</code> จากไฟล์ <code>Unnamed.json</code> | การคำนวณ stack ใช้สมมติฐาน Minecraft Vanilla (64/stack, <code>birch_sign</code> = 16/stack, <code>water_bucket</code> = 1/stack) | กดปุ่ม "แชร์ลิงก์ความคืบหน้า" เพื่อส่งสถานะที่ติ๊กแล้วให้แฟนเปิดต่อได้ทันที
+      * ข้อมูลจาก <code>material_list_2026-11-23_20.48.48.txt</code> (60 ชนิด, 20,080 ชิ้น) | หากต้องการให้ติ๊กพร้อมกันแบบเรียลไทม์ 2 เครื่อง ให้วาง URL ของ Firebase Realtime Database ในตัวแปร <code>FIREBASE_DB_URL</code> ในไฟล์นี้
     </p>
   </div>
 
   <div id="toast" class="toast"></div>
 
   <script>
+    // =========================================================================
+    // [ตั้งค่าซิงค์เรียลไทม์ 2 เครื่อง]
+    // วาง URL ของ Firebase Realtime Database ด้านล่างนี้ (ไม่ต้องมี / ต่อท้าย)
+    // ตัวอย่าง: "https://my-mc-checklist-default-rtdb.asia-southeast1.firebasedatabase.app"
+    // ถ้าเว้นว่าง "" ไว้ จะทำงานแบบบันทึกลงเครื่องตัวเอง + แชร์ผ่านลิงก์ได้ตามปกติ
+    // =========================================================================
+    const FIREBASE_DB_URL = "";
+
     const ITEMS = [
-      { id: "minecraft:red_wool", count: 1888, stackSize: 64 },
-      { id: "minecraft:dark_oak_wood", count: 1497, stackSize: 64 },
-      { id: "minecraft:stripped_spruce_wood", count: 1457, stackSize: 64 },
-      { id: "minecraft:chest", count: 1419, stackSize: 64 },
-      { id: "minecraft:stripped_birch_wood", count: 1277, stackSize: 64 },
-      { id: "minecraft:stripped_oak_wood", count: 1197, stackSize: 64 },
-      { id: "minecraft:hopper", count: 1183, stackSize: 64 },
-      { id: "minecraft:redstone", count: 706, stackSize: 64 },
-      { id: "minecraft:jungle_leaves", count: 620, stackSize: 64 },
-      { id: "minecraft:acacia_slab", count: 572, stackSize: 64 },
-      { id: "minecraft:cobbled_deepslate_slab", count: 474, stackSize: 64 },
-      { id: "minecraft:stripped_dark_oak_wood", count: 457, stackSize: 64 },
-      { id: "minecraft:packed_ice", count: 440, stackSize: 64 },
-      { id: "minecraft:deepslate_brick_slab", count: 433, stackSize: 64 },
-      { id: "minecraft:deepslate_tile_slab", count: 429, stackSize: 64 },
-      { id: "minecraft:lime_stained_glass", count: 424, stackSize: 64 },
-      { id: "minecraft:cobblestone_wall", count: 382, stackSize: 64 },
-      { id: "minecraft:birch_slab", count: 289, stackSize: 64 },
-      { id: "minecraft:black_concrete", count: 277, stackSize: 64 },
-      { id: "minecraft:green_concrete_powder", count: 261, stackSize: 64 },
-      { id: "minecraft:item_frame", count: 237, stackSize: 64 },
-      { id: "minecraft:barrel", count: 236, stackSize: 64 },
-      { id: "minecraft:comparator", count: 236, stackSize: 64 },
-      { id: "minecraft:repeater", count: 235, stackSize: 64 },
-      { id: "minecraft:redstone_lamp", count: 234, stackSize: 64 },
-      { id: "minecraft:redstone_torch", count: 232, stackSize: 64 },
-      { id: "minecraft:birch_stairs", count: 231, stackSize: 64 },
-      { id: "minecraft:black_stained_glass", count: 225, stackSize: 64 },
-      { id: "minecraft:gray_stained_glass", count: 225, stackSize: 64 },
-      { id: "minecraft:birch_fence", count: 209, stackSize: 64 },
-      { id: "minecraft:oak_slab", count: 204, stackSize: 64 },
-      { id: "minecraft:spruce_slab", count: 200, stackSize: 64 },
-      { id: "minecraft:spruce_stairs", count: 186, stackSize: 64 },
-      { id: "minecraft:green_stained_glass", count: 161, stackSize: 64 },
-      { id: "minecraft:shroomlight", count: 143, stackSize: 64 },
-      { id: "minecraft:polished_granite_stairs", count: 107, stackSize: 64 },
-      { id: "minecraft:spruce_trapdoor", count: 99, stackSize: 64 },
-      { id: "minecraft:bookshelf", count: 91, stackSize: 64 },
-      { id: "minecraft:acacia_stairs", count: 90, stackSize: 64 },
-      { id: "minecraft:mangrove_roots", count: 89, stackSize: 64 },
-      { id: "minecraft:stripped_oak_log", count: 84, stackSize: 64 },
-      { id: "minecraft:lantern", count: 72, stackSize: 64 },
-      { id: "minecraft:iron_chain", count: 72, stackSize: 64 },
-      { id: "minecraft:acacia_fence", count: 72, stackSize: 64 },
-      { id: "minecraft:stripped_spruce_log", count: 58, stackSize: 64 },
-      { id: "minecraft:birch_trapdoor", count: 56, stackSize: 64 },
-      { id: "minecraft:water_bucket", count: 52, stackSize: 1 },
-      { id: "minecraft:birch_sign", count: 50, stackSize: 16 },
-      { id: "minecraft:glass", count: 49, stackSize: 64 },
-      { id: "minecraft:stripped_dark_oak_log", count: 36, stackSize: 64 },
-      { id: "minecraft:chiseled_bookshelf", count: 34, stackSize: 64 },
-      { id: "minecraft:deepslate_tile_stairs", count: 32, stackSize: 64 },
-      { id: "minecraft:glowstone", count: 25, stackSize: 64 },
-      { id: "minecraft:acacia_trapdoor", count: 15, stackSize: 64 },
-      { id: "minecraft:dark_oak_stairs", count: 10, stackSize: 64 },
-      { id: "minecraft:stripped_jungle_wood", count: 4, stackSize: 64 },
-      { id: "minecraft:oak_trapdoor", count: 2, stackSize: 64 },
-      { id: "minecraft:dropper", count: 2, stackSize: 64 },
-      { id: "minecraft:soul_sand", count: 2, stackSize: 64 },
-      { id: "minecraft:target", count: 1, stackSize: 64 }
+      { key: "red_wool", name: "Red Wool", count: 1888, sb: "1.09 SB", stackSize: 64 },
+      { key: "dark_oak_wood", name: "Dark Oak Wood", count: 1497, sb: "0.87 SB", stackSize: 64 },
+      { key: "stripped_spruce_wood", name: "Stripped Spruce Wood", count: 1457, sb: "0.84 SB", stackSize: 64 },
+      { key: "chest", name: "Chest", count: 1419, sb: "0.82 SB", stackSize: 64 },
+      { key: "stripped_birch_wood", name: "Stripped Birch Wood", count: 1277, sb: "0.74 SB", stackSize: 64 },
+      { key: "stripped_oak_wood", name: "Stripped Oak Wood", count: 1197, sb: "0.69 SB", stackSize: 64 },
+      { key: "hopper", name: "Hopper", count: 1183, sb: "0.68 SB", stackSize: 64 },
+      { key: "redstone_dust", name: "Redstone Dust", count: 706, sb: "0.41 SB", stackSize: 64 },
+      { key: "jungle_leaves", name: "Jungle Leaves", count: 620, sb: "0.36 SB", stackSize: 64 },
+      { key: "acacia_slab", name: "Acacia Slab", count: 572, sb: "0.33 SB", stackSize: 64 },
+      { key: "cobbled_deepslate_slab", name: "Cobbled Deepslate Slab", count: 474, sb: "0.27 SB", stackSize: 64 },
+      { key: "stripped_dark_oak_wood", name: "Stripped Dark Oak Wood", count: 457, sb: "0.26 SB", stackSize: 64 },
+      { key: "packed_ice", name: "Packed Ice", count: 440, sb: "0.25 SB", stackSize: 64 },
+      { key: "deepslate_brick_slab", name: "Deepslate Brick Slab", count: 433, sb: "0.25 SB", stackSize: 64 },
+      { key: "deepslate_tile_slab", name: "Deepslate Tile Slab", count: 429, sb: "0.25 SB", stackSize: 64 },
+      { key: "lime_stained_glass", name: "Lime Stained Glass", count: 424, sb: "0.25 SB", stackSize: 64 },
+      { key: "cobblestone_wall", name: "Cobblestone Wall", count: 382, sb: "0.22 SB", stackSize: 64 },
+      { key: "birch_slab", name: "Birch Slab", count: 289, sb: "0.17 SB", stackSize: 64 },
+      { key: "black_concrete", name: "Black Concrete", count: 277, sb: "0.16 SB", stackSize: 64 },
+      { key: "green_concrete_powder", name: "Green Concrete Powder", count: 261, sb: "0.15 SB", stackSize: 64 },
+      { key: "item_frame", name: "Item Frame", count: 237, sb: "0.14 SB", stackSize: 64 },
+      { key: "barrel", name: "Barrel", count: 236, sb: "0.14 SB", stackSize: 64 },
+      { key: "redstone_comparator", name: "Redstone Comparator", count: 236, sb: "0.14 SB", stackSize: 64 },
+      { key: "redstone_repeater", name: "Redstone Repeater", count: 235, sb: "0.14 SB", stackSize: 64 },
+      { key: "redstone_lamp", name: "Redstone Lamp", count: 234, sb: "0.14 SB", stackSize: 64 },
+      { key: "redstone_torch", name: "Redstone Torch", count: 232, sb: "0.13 SB", stackSize: 64 },
+      { key: "birch_stairs", name: "Birch Stairs", count: 231, sb: "0.13 SB", stackSize: 64 },
+      { key: "black_stained_glass", name: "Black Stained Glass", count: 225, sb: "0.13 SB", stackSize: 64 },
+      { key: "gray_stained_glass", name: "Gray Stained Glass", count: 225, sb: "0.13 SB", stackSize: 64 },
+      { key: "birch_fence", name: "Birch Fence", count: 209, sb: "0.12 SB", stackSize: 64 },
+      { key: "oak_slab", name: "Oak Slab", count: 204, sb: "0.12 SB", stackSize: 64 },
+      { key: "spruce_slab", name: "Spruce Slab", count: 200, sb: "0.12 SB", stackSize: 64 },
+      { key: "spruce_stairs", name: "Spruce Stairs", count: 186, sb: "0.11 SB", stackSize: 64 },
+      { key: "green_stained_glass", name: "Green Stained Glass", count: 161, sb: "0.09 SB", stackSize: 64 },
+      { key: "shroomlight", name: "Shroomlight", count: 143, sb: "0.08 SB", stackSize: 64 },
+      { key: "polished_granite_stairs", name: "Polished Granite Stairs", count: 107, sb: "0.06 SB", stackSize: 64 },
+      { key: "spruce_trapdoor", name: "Spruce Trapdoor", count: 99, sb: "0.06 SB", stackSize: 64 },
+      { key: "bookshelf", name: "Bookshelf", count: 91, sb: "0.05 SB", stackSize: 64 },
+      { key: "acacia_stairs", name: "Acacia Stairs", count: 90, sb: "0.05 SB", stackSize: 64 },
+      { key: "mangrove_roots", name: "Mangrove Roots", count: 89, sb: "0.05 SB", stackSize: 64 },
+      { key: "stripped_oak_log", name: "Stripped Oak Log", count: 84, sb: "0.05 SB", stackSize: 64 },
+      { key: "acacia_fence", name: "Acacia Fence", count: 72, sb: "0.04 SB", stackSize: 64 },
+      { key: "iron_chain", name: "Iron Chain", count: 72, sb: "0.04 SB", stackSize: 64 },
+      { key: "lantern", name: "Lantern", count: 72, sb: "0.04 SB", stackSize: 64 },
+      { key: "stripped_spruce_log", name: "Stripped Spruce Log", count: 58, sb: "0.03 SB", stackSize: 64 },
+      { key: "birch_trapdoor", name: "Birch Trapdoor", count: 56, sb: "0.03 SB", stackSize: 64 },
+      { key: "water_bucket", name: "Water Bucket", count: 52, sb: "1.93 SB", stackSize: 1 },
+      { key: "birch_sign", name: "Birch Sign", count: 50, sb: "0.12 SB", stackSize: 16 },
+      { key: "glass", name: "Glass", count: 49, sb: "0.03 SB", stackSize: 64 },
+      { key: "stripped_dark_oak_log", name: "Stripped Dark Oak Log", count: 36, sb: "0.02 SB", stackSize: 64 },
+      { key: "chiseled_bookshelf", name: "Chiseled Bookshelf", count: 34, sb: "0.02 SB", stackSize: 64 },
+      { key: "deepslate_tile_stairs", name: "Deepslate Tile Stairs", count: 32, sb: "0.02 SB", stackSize: 64 },
+      { key: "glowstone", name: "Glowstone", count: 25, sb: "0.01 SB", stackSize: 64 },
+      { key: "acacia_trapdoor", name: "Acacia Trapdoor", count: 15, sb: "0.01 SB", stackSize: 64 },
+      { key: "dark_oak_stairs", name: "Dark Oak Stairs", count: 10, sb: "0.01 SB", stackSize: 64 },
+      { key: "stripped_jungle_wood", name: "Stripped Jungle Wood", count: 4, sb: "0.00 SB", stackSize: 64 },
+      { key: "dropper", name: "Dropper", count: 2, sb: "0.00 SB", stackSize: 64 },
+      { key: "oak_trapdoor", name: "Oak Trapdoor", count: 2, sb: "0.00 SB", stackSize: 64 },
+      { key: "soul_sand", name: "Soul Sand", count: 2, sb: "0.00 SB", stackSize: 64 },
+      { key: "target", name: "Target", count: 1, sb: "0.00 SB", stackSize: 64 }
     ].map((item, idx) => ({
       ...item,
       idx,
-      stacks: Math.ceil(item.count / item.stackSize),
-      shortName: item.id.replace(/^minecraft:/, "")
+      stacks: Math.ceil(item.count / item.stackSize)
     }));
 
-    const STORAGE_KEY = "mc_checklist_unnamed_json_v1";
+    const STORAGE_KEY = "mc_checklist_unnamed_v2";
+    const DB_URL = FIREBASE_DB_URL.trim().replace(/\/+$/, "");
     let checkedSet = new Set();
     let currentFilter = "all";
     let currentSort = "count_desc";
@@ -511,14 +568,20 @@
       el.textContent = msg;
       el.classList.add("show");
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => el.classList.remove("show"), 2000);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    function setSyncStatus(online, text) {
+      const pill = document.getElementById("syncPill");
+      const label = document.getElementById("syncText");
+      pill.classList.toggle("online", online);
+      label.textContent = text;
     }
 
     function encodeState() {
-      let lo = 0;
-      let hi = 0;
+      let lo = 0, hi = 0;
       for (const item of ITEMS) {
-        if (checkedSet.has(item.id)) {
+        if (checkedSet.has(item.key)) {
           if (item.idx < 30) lo |= (1 << item.idx);
           else hi |= (1 << (item.idx - 30));
         }
@@ -535,18 +598,18 @@
       const set = new Set();
       for (const item of ITEMS) {
         const bit = item.idx < 30 ? (lo & (1 << item.idx)) : (hi & (1 << (item.idx - 30)));
-        if (bit) set.add(item.id);
+        if (bit) set.add(item.key);
       }
       return set;
     }
 
-    function loadState() {
+    function loadLocalState() {
       const hash = window.location.hash || "";
       if (hash.startsWith("#s=")) {
         const decoded = decodeState(hash.slice(3));
         if (decoded) {
           checkedSet = decoded;
-          saveState(false);
+          saveLocalState(false);
           return;
         }
       }
@@ -559,15 +622,89 @@
       } catch (_) {}
     }
 
-    function saveState(updateHash = true) {
+    function saveLocalState(updateHash = true) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify([...checkedSet]));
       } catch (_) {}
-      if (updateHash) {
+      if (updateHash && !DB_URL) {
         try {
           const nextHash = checkedSet.size > 0 ? `#s=${encodeState()}` : "";
           history.replaceState(null, "", nextHash || window.location.pathname + window.location.search);
         } catch (_) {}
+      }
+    }
+
+    // --- Real-time Firebase RTDB (REST + SSE EventSource) ---
+    function applyRemoteData(path, data) {
+      if (path === "/") {
+        checkedSet.clear();
+        if (data && typeof data === "object") {
+          for (const [k, v] of Object.entries(data)) {
+            if (v === true) checkedSet.add(k);
+          }
+        }
+      } else {
+        const key = path.replace(/^\//, "");
+        if (data === true) checkedSet.add(key);
+        else checkedSet.delete(key);
+      }
+      saveLocalState(false);
+      updateSummary();
+      renderList();
+    }
+
+    function initRealtimeSync() {
+      if (!DB_URL) return;
+      setSyncStatus(false, "กำลังเชื่อมต่อเรียลไทม์...");
+      try {
+        const es = new EventSource(`${DB_URL}/checklist.json`);
+        es.addEventListener("open", () => {
+          setSyncStatus(true, "ออนไลน์ (เรียลไทม์)");
+        });
+        es.addEventListener("put", (e) => {
+          setSyncStatus(true, "ออนไลน์ (เรียลไทม์)");
+          const payload = JSON.parse(e.data);
+          applyRemoteData(payload.path, payload.data);
+        });
+        es.addEventListener("patch", (e) => {
+          const payload = JSON.parse(e.data);
+          if (payload.data && typeof payload.data === "object") {
+            for (const [k, v] of Object.entries(payload.data)) {
+              if (v === true) checkedSet.add(k);
+              else checkedSet.delete(k);
+            }
+            saveLocalState(false);
+            updateSummary();
+            renderList();
+          }
+        });
+        es.onerror = () => {
+          setSyncStatus(false, "เชื่อมต่อขาดหาย กำลังลองใหม่...");
+        };
+      } catch (_) {
+        setSyncStatus(false, "เชื่อมต่อไม่สำเร็จ");
+      }
+    }
+
+    async function pushItemToggle(key, isChecked) {
+      if (!DB_URL) return;
+      try {
+        await fetch(`${DB_URL}/checklist/${encodeURIComponent(key)}.json`, {
+          method: isChecked ? "PUT" : "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: isChecked ? "true" : undefined
+        });
+      } catch (_) {
+        showToast("ซิงค์ไม่สำเร็จ เช็คอินเทอร์เน็ตหรือ Rules ของ Firebase");
+      }
+    }
+
+    async function pushResetAll() {
+      if (!DB_URL) return;
+      try {
+        await fetch(`${DB_URL}/checklist.json`, { method: "DELETE" });
+      } catch (_) {
+        showToast("รีเซ็ตบนเซิร์ฟเวอร์ไม่สำเร็จ");
       }
     }
 
@@ -582,7 +719,7 @@
 
       let remainingStacks = 0;
       for (const item of ITEMS) {
-        if (!checkedSet.has(item.id)) remainingStacks += item.stacks;
+        if (!checkedSet.has(item.key)) remainingStacks += item.stacks;
       }
       const shulkers = Math.ceil(remainingStacks / 27);
 
@@ -598,20 +735,20 @@
     function renderList() {
       const q = searchQuery.trim().toLowerCase();
       let filtered = ITEMS.filter(item => {
-        const isDone = checkedSet.has(item.id);
+        const isDone = checkedSet.has(item.key);
         if (currentFilter === "todo" && isDone) return false;
         if (currentFilter === "done" && !isDone) return false;
-        if (q && !item.id.toLowerCase().includes(q) && !item.shortName.replace(/_/g, " ").includes(q)) {
+        if (q && !item.name.toLowerCase().includes(q) && !item.key.includes(q)) {
           return false;
         }
         return true;
       });
 
       filtered.sort((a, b) => {
-        if (currentSort === "name_asc") return a.shortName.localeCompare(b.shortName);
+        if (currentSort === "name_asc") return a.name.localeCompare(b.name);
         if (currentSort === "todo_first") {
-          const da = checkedSet.has(a.id) ? 1 : 0;
-          const db = checkedSet.has(b.id) ? 1 : 0;
+          const da = checkedSet.has(a.key) ? 1 : 0;
+          const db = checkedSet.has(b.key) ? 1 : 0;
           if (da !== db) return da - db;
           return b.count - a.count;
         }
@@ -630,7 +767,7 @@
 
       const frag = document.createDocumentFragment();
       for (const item of filtered) {
-        const isDone = checkedSet.has(item.id);
+        const isDone = checkedSet.has(item.key);
         const row = document.createElement("label");
         row.className = `list-row${isDone ? " done" : ""}`;
 
@@ -641,18 +778,21 @@
         row.innerHTML = `
           <input type="checkbox" ${isDone ? "checked" : ""} />
           <div class="item-name-wrap">
-            <span class="item-name">${item.shortName}</span>${badge}
+            <span class="item-name">${item.name}</span>${badge}
           </div>
           <span class="item-count">${item.count.toLocaleString()} ชิ้น</span>
+          <span class="item-sb">${item.sb}</span>
           <span class="item-stacks">${formatStacks(item)}</span>
         `;
 
         row.querySelector("input").addEventListener("change", (e) => {
-          if (e.target.checked) checkedSet.add(item.id);
-          else checkedSet.delete(item.id);
-          saveState(true);
+          const checked = e.target.checked;
+          if (checked) checkedSet.add(item.key);
+          else checkedSet.delete(item.key);
+          saveLocalState(true);
           updateSummary();
           renderList();
+          pushItemToggle(item.key, checked);
         });
 
         frag.appendChild(row);
@@ -682,27 +822,28 @@
     document.getElementById("resetBtn").addEventListener("click", () => {
       if (checkedSet.size === 0) return;
       checkedSet.clear();
-      saveState(true);
+      saveLocalState(true);
       updateSummary();
       renderList();
+      pushResetAll();
       showToast("รีเซ็ตเช็คลิสต์แล้ว");
     });
 
     document.getElementById("shareLinkBtn").addEventListener("click", async () => {
-      saveState(true);
+      saveLocalState(true);
       try {
         await navigator.clipboard.writeText(window.location.href);
-        showToast("คัดลอกลิงก์ความคืบหน้าแล้ว ส่งให้แฟนได้เลย!");
+        showToast(DB_URL ? "คัดลอกลิงก์เว็บแล้ว ส่งให้แฟนเปิดพร้อมกันได้เลย!" : "คัดลอกลิงก์ความคืบหน้าแล้ว ส่งให้แฟนได้เลย!");
       } catch (_) {
         showToast("คัดลอกไม่สำเร็จ กรุณาก๊อป URL จากแถบด้านบน");
       }
     });
 
     document.getElementById("copyRemainingBtn").addEventListener("click", async () => {
-      const remaining = ITEMS.filter(i => !checkedSet.has(i.id));
+      const remaining = ITEMS.filter(i => !checkedSet.has(i.key));
       const text = remaining.length === 0
         ? "เตรียมของครบทุกอย่างแล้ว!"
-        : remaining.map(i => `- [ ] ${i.shortName}: ${formatStacks(i)} (${i.count} ชิ้น)`).join("\n");
+        : remaining.map(i => `- [ ] ${i.name}: ${formatStacks(i)} (${i.count} ชิ้น)`).join("\n");
       try {
         await navigator.clipboard.writeText(text);
         showToast("คัดลอกรายการที่ยังขาดแล้ว!");
@@ -711,9 +852,10 @@
       }
     });
 
-    loadState();
+    loadLocalState();
     updateSummary();
     renderList();
+    initRealtimeSync();
   </script>
 </body>
 </html>
