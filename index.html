@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checklist: Unnamed Schematic</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0d1117;
+      color: #e6edf3;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Thai", sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .header-card {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #f0f6fc;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #8b949e;
+      margin-top: 4px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button, select, input[type="text"] {
+      font-family: inherit;
+      font-size: 12px;
+      color: #e6edf3;
+      border-radius: 8px;
+      border: 1px solid #30363d;
+      transition: background-color 0.15s, border-color 0.15s, opacity 0.15s;
+    }
+
+    .btn {
+      background-color: #21262d;
+      padding: 7px 12px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #30363d;
+      border-color: #8b949e;
+    }
+
+    .btn-primary {
+      background-color: #238636;
+      border-color: rgba(240, 246, 252, 0.1);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: #2ea043;
+      border-color: rgba(240, 246, 252, 0.2);
+    }
+
+    .btn-danger {
+      background-color: transparent;
+      color: #f85149;
+    }
+
+    .btn-danger:hover {
+      background-color: rgba(248, 81, 73, 0.12);
+      border-color: #f85149;
+    }
+
+    .progress-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .progress-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .progress-label {
+      font-weight: 600;
+      color: #f0f6fc;
+    }
+
+    .stack-summary {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #8b949e;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #238636, #3fb950);
+      transition: width 0.25s ease;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid #21262d;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 190px;
+      background-color: #0d1117;
+      padding: 7px 12px;
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: #6e7681;
+    }
+
+    .search-input:focus {
+      border-color: #58a6ff;
+    }
+
+    .filter-group {
+      display: flex;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #30363d;
+    }
+
+    .filter-btn {
+      border: none;
+      border-radius: 0;
+      background-color: #0d1117;
+      color: #8b949e;
+      padding: 7px 12px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .filter-btn + .filter-btn {
+      border-left: 1px solid #30363d;
+    }
+
+    .filter-btn:hover {
+      color: #e6edf3;
+    }
+
+    .filter-btn.active {
+      background-color: #1f6feb;
+      color: #ffffff;
+    }
+
+    .sort-select {
+      background-color: #0d1117;
+      padding: 7px 10px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 28px 1fr auto auto;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      background-color: #0d1117;
+      border-bottom: 1px solid #30363d;
+      font-size: 12px;
+      font-weight: 600;
+      color: #8b949e;
+    }
+
+    .list-row {
+      display: grid;
+      grid-template-columns: 28px 1fr auto auto;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 16px;
+      border-bottom: 1px solid #21262d;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.12s, opacity 0.15s;
+    }
+
+    .list-row:last-child {
+      border-bottom: none;
+    }
+
+    .list-row:hover {
+      background-color: #1c2128;
+    }
+
+    .list-row.done {
+      opacity: 0.5;
+    }
+
+    .list-row input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #3fb950;
+      cursor: pointer;
+      justify-self: center;
+    }
+
+    .item-name-wrap {
+      min-width: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .item-name {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      color: #e6edf3;
+      word-break: break-word;
+    }
+
+    .list-row.done .item-name,
+    .list-row.done .item-stacks {
+      text-decoration: line-through;
+      color: #8b949e;
+    }
+
+    .badge {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 6px;
+      background-color: rgba(210, 153, 34, 0.14);
+      border: 1px solid rgba(210, 153, 34, 0.4);
+      color: #e3b341;
+      white-space: nowrap;
+    }
+
+    .item-count {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      color: #8b949e;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .item-stacks {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: #58a6ff;
+      text-align: right;
+      min-width: 84px;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      display: none;
+      padding: 32px 16px;
+      text-align: center;
+      font-size: 13px;
+      color: #8b949e;
+    }
+
+    .empty-state.show {
+      display: block;
+    }
+
+    .footnote {
+      font-size: 12px;
+      color: #8b949e;
+      padding: 0 4px 16px;
+    }
+
+    .footnote code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background-color: #161b22;
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background-color: #238636;
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 560px) {
+      body { padding: 10px; }
+      .header-card { padding: 14px; }
+      .table-header, .list-row {
+        grid-template-columns: 24px 1fr auto;
+        gap: 8px;
+        padding: 10px 12px;
+      }
+      .col-count, .item-count { display: none; }
+      .item-stacks { min-width: 72px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card header-card">
+      <div class="header-top">
+        <div>
+          <h1>เช็คลิสต์วัสดุ: Unnamed.json</h1>
+          <p class="subtitle">60 ชนิดไอเทม • รวม 20,080 ชิ้น • ปัดเศษขึ้นเป็น stack (มาตรฐาน Vanilla: 64 / 16 / 1)</p>
+        </div>
+        <div class="actions">
+          <button id="shareLinkBtn" type="button" class="btn btn-primary">แชร์ลิงก์ความคืบหน้า</button>
+          <button id="copyRemainingBtn" type="button" class="btn">คัดลอกของที่ยังขาด</button>
+          <button id="resetBtn" type="button" class="btn btn-danger">รีเซ็ต</button>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span id="progressLabel" class="progress-label">เตรียมแล้ว 0 / 60 ชนิด (0%)</span>
+          <span id="stackSummary" class="stack-summary">เหลือ 399 stack (~15 Shulker)</span>
+        </div>
+        <div class="progress-track">
+          <div id="progressBar" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <input id="searchInput" type="text" class="search-input" placeholder="ค้นหาชื่อไอเทม เช่น chest, spruce, glass..." />
+
+        <div class="filter-group">
+          <button data-filter="all" class="filter-btn active" type="button">ทั้งหมด</button>
+          <button data-filter="todo" class="filter-btn" type="button">ยังไม่ครบ</button>
+          <button data-filter="done" class="filter-btn" type="button">ครบแล้ว</button>
+        </div>
+
+        <select id="sortSelect" class="sort-select">
+          <option value="count_desc">มาก → น้อย</option>
+          <option value="todo_first">ยังไม่ครบขึ้นก่อน</option>
+          <option value="name_asc">ชื่อ A → Z</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-header">
+        <span style="text-align:center;">✓</span>
+        <span>ไอเทม</span>
+        <span class="col-count" style="text-align:right;">จำนวนจริง</span>
+        <span style="text-align:right; min-width:84px;">ต้องเตรียม</span>
+      </div>
+      <div id="listContainer"></div>
+      <div id="emptyState" class="empty-state">ไม่พบรายการที่ตรงกับเงื่อนไข</div>
+    </div>
+
+    <p class="footnote">
+      * ข้อมูล <code>id</code> และ <code>count</code> จากไฟล์ <code>Unnamed.json</code> | การคำนวณ stack ใช้สมมติฐาน Minecraft Vanilla (64/stack, <code>birch_sign</code> = 16/stack, <code>water_bucket</code> = 1/stack) | กดปุ่ม "แชร์ลิงก์ความคืบหน้า" เพื่อส่งสถานะที่ติ๊กแล้วให้แฟนเปิดต่อได้ทันที
+    </p>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const ITEMS = [
+      { id: "minecraft:red_wool", count: 1888, stackSize: 64 },
+      { id: "minecraft:dark_oak_wood", count: 1497, stackSize: 64 },
+      { id: "minecraft:stripped_spruce_wood", count: 1457, stackSize: 64 },
+      { id: "minecraft:chest", count: 1419, stackSize: 64 },
+      { id: "minecraft:stripped_birch_wood", count: 1277, stackSize: 64 },
+      { id: "minecraft:stripped_oak_wood", count: 1197, stackSize: 64 },
+      { id: "minecraft:hopper", count: 1183, stackSize: 64 },
+      { id: "minecraft:redstone", count: 706, stackSize: 64 },
+      { id: "minecraft:jungle_leaves", count: 620, stackSize: 64 },
+      { id: "minecraft:acacia_slab", count: 572, stackSize: 64 },
+      { id: "minecraft:cobbled_deepslate_slab", count: 474, stackSize: 64 },
+      { id: "minecraft:stripped_dark_oak_wood", count: 457, stackSize: 64 },
+      { id: "minecraft:packed_ice", count: 440, stackSize: 64 },
+      { id: "minecraft:deepslate_brick_slab", count: 433, stackSize: 64 },
+      { id: "minecraft:deepslate_tile_slab", count: 429, stackSize: 64 },
+      { id: "minecraft:lime_stained_glass", count: 424, stackSize: 64 },
+      { id: "minecraft:cobblestone_wall", count: 382, stackSize: 64 },
+      { id: "minecraft:birch_slab", count: 289, stackSize: 64 },
+      { id: "minecraft:black_concrete", count: 277, stackSize: 64 },
+      { id: "minecraft:green_concrete_powder", count: 261, stackSize: 64 },
+      { id: "minecraft:item_frame", count: 237, stackSize: 64 },
+      { id: "minecraft:barrel", count: 236, stackSize: 64 },
+      { id: "minecraft:comparator", count: 236, stackSize: 64 },
+      { id: "minecraft:repeater", count: 235, stackSize: 64 },
+      { id: "minecraft:redstone_lamp", count: 234, stackSize: 64 },
+      { id: "minecraft:redstone_torch", count: 232, stackSize: 64 },
+      { id: "minecraft:birch_stairs", count: 231, stackSize: 64 },
+      { id: "minecraft:black_stained_glass", count: 225, stackSize: 64 },
+      { id: "minecraft:gray_stained_glass", count: 225, stackSize: 64 },
+      { id: "minecraft:birch_fence", count: 209, stackSize: 64 },
+      { id: "minecraft:oak_slab", count: 204, stackSize: 64 },
+      { id: "minecraft:spruce_slab", count: 200, stackSize: 64 },
+      { id: "minecraft:spruce_stairs", count: 186, stackSize: 64 },
+      { id: "minecraft:green_stained_glass", count: 161, stackSize: 64 },
+      { id: "minecraft:shroomlight", count: 143, stackSize: 64 },
+      { id: "minecraft:polished_granite_stairs", count: 107, stackSize: 64 },
+      { id: "minecraft:spruce_trapdoor", count: 99, stackSize: 64 },
+      { id: "minecraft:bookshelf", count: 91, stackSize: 64 },
+      { id: "minecraft:acacia_stairs", count: 90, stackSize: 64 },
+      { id: "minecraft:mangrove_roots", count: 89, stackSize: 64 },
+      { id: "minecraft:stripped_oak_log", count: 84, stackSize: 64 },
+      { id: "minecraft:lantern", count: 72, stackSize: 64 },
+      { id: "minecraft:iron_chain", count: 72, stackSize: 64 },
+      { id: "minecraft:acacia_fence", count: 72, stackSize: 64 },
+      { id: "minecraft:stripped_spruce_log", count: 58, stackSize: 64 },
+      { id: "minecraft:birch_trapdoor", count: 56, stackSize: 64 },
+      { id: "minecraft:water_bucket", count: 52, stackSize: 1 },
+      { id: "minecraft:birch_sign", count: 50, stackSize: 16 },
+      { id: "minecraft:glass", count: 49, stackSize: 64 },
+      { id: "minecraft:stripped_dark_oak_log", count: 36, stackSize: 64 },
+      { id: "minecraft:chiseled_bookshelf", count: 34, stackSize: 64 },
+      { id: "minecraft:deepslate_tile_stairs", count: 32, stackSize: 64 },
+      { id: "minecraft:glowstone", count: 25, stackSize: 64 },
+      { id: "minecraft:acacia_trapdoor", count: 15, stackSize: 64 },
+      { id: "minecraft:dark_oak_stairs", count: 10, stackSize: 64 },
+      { id: "minecraft:stripped_jungle_wood", count: 4, stackSize: 64 },
+      { id: "minecraft:oak_trapdoor", count: 2, stackSize: 64 },
+      { id: "minecraft:dropper", count: 2, stackSize: 64 },
+      { id: "minecraft:soul_sand", count: 2, stackSize: 64 },
+      { id: "minecraft:target", count: 1, stackSize: 64 }
+    ].map((item, idx) => ({
+      ...item,
+      idx,
+      stacks: Math.ceil(item.count / item.stackSize),
+      shortName: item.id.replace(/^minecraft:/, "")
+    }));
+
+    const STORAGE_KEY = "mc_checklist_unnamed_json_v1";
+    let checkedSet = new Set();
+    let currentFilter = "all";
+    let currentSort = "count_desc";
+    let searchQuery = "";
+    let toastTimer = null;
+
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 2000);
+    }
+
+    function encodeState() {
+      let lo = 0;
+      let hi = 0;
+      for (const item of ITEMS) {
+        if (checkedSet.has(item.id)) {
+          if (item.idx < 30) lo |= (1 << item.idx);
+          else hi |= (1 << (item.idx - 30));
+        }
+      }
+      return `${hi.toString(36)}-${lo.toString(36)}`;
+    }
+
+    function decodeState(str) {
+      const parts = str.split("-");
+      if (parts.length !== 2) return null;
+      const hi = parseInt(parts[0], 36);
+      const lo = parseInt(parts[1], 36);
+      if (Number.isNaN(hi) || Number.isNaN(lo)) return null;
+      const set = new Set();
+      for (const item of ITEMS) {
+        const bit = item.idx < 30 ? (lo & (1 << item.idx)) : (hi & (1 << (item.idx - 30)));
+        if (bit) set.add(item.id);
+      }
+      return set;
+    }
+
+    function loadState() {
+      const hash = window.location.hash || "";
+      if (hash.startsWith("#s=")) {
+        const decoded = decodeState(hash.slice(3));
+        if (decoded) {
+          checkedSet = decoded;
+          saveState(false);
+          return;
+        }
+      }
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) checkedSet = new Set(parsed);
+        }
+      } catch (_) {}
+    }
+
+    function saveState(updateHash = true) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...checkedSet]));
+      } catch (_) {}
+      if (updateHash) {
+        try {
+          const nextHash = checkedSet.size > 0 ? `#s=${encodeState()}` : "";
+          history.replaceState(null, "", nextHash || window.location.pathname + window.location.search);
+        } catch (_) {}
+      }
+    }
+
+    function formatStacks(item) {
+      return item.stackSize === 1 ? `${item.stacks} ถัง` : `${item.stacks} stack`;
+    }
+
+    function updateSummary() {
+      const doneCount = checkedSet.size;
+      const totalCount = ITEMS.length;
+      const pct = Math.round((doneCount / totalCount) * 100);
+
+      let remainingStacks = 0;
+      for (const item of ITEMS) {
+        if (!checkedSet.has(item.id)) remainingStacks += item.stacks;
+      }
+      const shulkers = Math.ceil(remainingStacks / 27);
+
+      document.getElementById("progressLabel").textContent =
+        `เตรียมแล้ว ${doneCount} / ${totalCount} ชนิด (${pct}%)`;
+      document.getElementById("stackSummary").textContent =
+        remainingStacks === 0
+          ? "ครบทั้งหมดแล้ว!"
+          : `เหลือ ${remainingStacks} stack (~${shulkers} Shulker)`;
+      document.getElementById("progressBar").style.width = `${pct}%`;
+    }
+
+    function renderList() {
+      const q = searchQuery.trim().toLowerCase();
+      let filtered = ITEMS.filter(item => {
+        const isDone = checkedSet.has(item.id);
+        if (currentFilter === "todo" && isDone) return false;
+        if (currentFilter === "done" && !isDone) return false;
+        if (q && !item.id.toLowerCase().includes(q) && !item.shortName.replace(/_/g, " ").includes(q)) {
+          return false;
+        }
+        return true;
+      });
+
+      filtered.sort((a, b) => {
+        if (currentSort === "name_asc") return a.shortName.localeCompare(b.shortName);
+        if (currentSort === "todo_first") {
+          const da = checkedSet.has(a.id) ? 1 : 0;
+          const db = checkedSet.has(b.id) ? 1 : 0;
+          if (da !== db) return da - db;
+          return b.count - a.count;
+        }
+        return b.count - a.count;
+      });
+
+      const container = document.getElementById("listContainer");
+      const emptyState = document.getElementById("emptyState");
+      container.innerHTML = "";
+
+      if (filtered.length === 0) {
+        emptyState.classList.add("show");
+        return;
+      }
+      emptyState.classList.remove("show");
+
+      const frag = document.createDocumentFragment();
+      for (const item of filtered) {
+        const isDone = checkedSet.has(item.id);
+        const row = document.createElement("label");
+        row.className = `list-row${isDone ? " done" : ""}`;
+
+        const badge = item.stackSize !== 64
+          ? `<span class="badge">${item.stackSize}/stack</span>`
+          : "";
+
+        row.innerHTML = `
+          <input type="checkbox" ${isDone ? "checked" : ""} />
+          <div class="item-name-wrap">
+            <span class="item-name">${item.shortName}</span>${badge}
+          </div>
+          <span class="item-count">${item.count.toLocaleString()} ชิ้น</span>
+          <span class="item-stacks">${formatStacks(item)}</span>
+        `;
+
+        row.querySelector("input").addEventListener("change", (e) => {
+          if (e.target.checked) checkedSet.add(item.id);
+          else checkedSet.delete(item.id);
+          saveState(true);
+          updateSummary();
+          renderList();
+        });
+
+        frag.appendChild(row);
+      }
+      container.appendChild(frag);
+    }
+
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      renderList();
+    });
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentFilter = btn.dataset.filter;
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderList();
+      });
+    });
+
+    document.getElementById("sortSelect").addEventListener("change", (e) => {
+      currentSort = e.target.value;
+      renderList();
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      if (checkedSet.size === 0) return;
+      checkedSet.clear();
+      saveState(true);
+      updateSummary();
+      renderList();
+      showToast("รีเซ็ตเช็คลิสต์แล้ว");
+    });
+
+    document.getElementById("shareLinkBtn").addEventListener("click", async () => {
+      saveState(true);
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast("คัดลอกลิงก์ความคืบหน้าแล้ว ส่งให้แฟนได้เลย!");
+      } catch (_) {
+        showToast("คัดลอกไม่สำเร็จ กรุณาก๊อป URL จากแถบด้านบน");
+      }
+    });
+
+    document.getElementById("copyRemainingBtn").addEventListener("click", async () => {
+      const remaining = ITEMS.filter(i => !checkedSet.has(i.id));
+      const text = remaining.length === 0
+        ? "เตรียมของครบทุกอย่างแล้ว!"
+        : remaining.map(i => `- [ ] ${i.shortName}: ${formatStacks(i)} (${i.count} ชิ้น)`).join("\n");
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("คัดลอกรายการที่ยังขาดแล้ว!");
+      } catch (_) {
+        showToast("คัดลอกไม่สำเร็จ");
+      }
+    });
+
+    loadState();
+    updateSummary();
+    renderList();
+  </script>
+</body>
+</html>
