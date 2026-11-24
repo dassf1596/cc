@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checklist: Unnamed Schematic</title>
+  <title>Litematica Material Checklist</title>
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -23,7 +23,7 @@
     }
 
     .container {
-      max-width: 880px;
+      max-width: 920px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -37,30 +37,30 @@
       overflow: hidden;
     }
 
-    .header-card {
-      padding: 20px;
+    .library-card {
+      padding: 16px 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
-    .header-top {
+    .library-top {
       display: flex;
       flex-wrap: wrap;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
 
-    .title-row {
+    .brand-row {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 8px;
     }
 
-    h1 {
-      font-size: 20px;
+    .brand-title {
+      font-size: 17px;
       font-weight: 600;
       color: #f0f6fc;
     }
@@ -96,6 +96,157 @@
       box-shadow: 0 0 6px #3fb950;
     }
 
+    .saved-lists {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .list-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+      min-width: 175px;
+      max-width: 260px;
+      padding: 9px 11px;
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s, background-color 0.15s;
+    }
+
+    .list-tab:hover {
+      background-color: #1c2128;
+      border-color: #8b949e;
+    }
+
+    .list-tab.active {
+      background-color: rgba(31, 111, 235, 0.14);
+      border-color: #58a6ff;
+    }
+
+    .list-tab-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .list-tab-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #f0f6fc;
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .list-tab-actions {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: transparent;
+      color: #8b949e;
+      cursor: pointer;
+      transition: background-color 0.12s, color 0.12s, border-color 0.12s;
+    }
+
+    .icon-btn:hover {
+      background-color: #21262d;
+      border-color: #30363d;
+      color: #f0f6fc;
+    }
+
+    .icon-btn.danger:hover {
+      background-color: rgba(248, 81, 73, 0.15);
+      border-color: rgba(248, 81, 73, 0.5);
+      color: #f85149;
+    }
+
+    .list-tab-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 11px;
+      color: #8b949e;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .list-tab-bar {
+      width: 100%;
+      height: 4px;
+      background-color: #21262d;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .list-tab-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #238636, #3fb950);
+      transition: width 0.2s ease;
+    }
+
+    .empty-library {
+      padding: 28px 16px;
+      text-align: center;
+      border: 1px dashed #30363d;
+      border-radius: 10px;
+      background-color: #0d1117;
+      color: #8b949e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-card {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #f0f6fc;
+      word-break: break-word;
+    }
+
     .subtitle {
       font-size: 12px;
       color: #8b949e;
@@ -124,9 +275,14 @@
       cursor: pointer;
     }
 
-    .btn:hover {
+    .btn:hover:not(:disabled) {
       background-color: #30363d;
       border-color: #8b949e;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
     }
 
     .btn-primary {
@@ -135,7 +291,7 @@
       color: #ffffff;
     }
 
-    .btn-primary:hover {
+    .btn-primary:hover:not(:disabled) {
       background-color: #2ea043;
       border-color: rgba(240, 246, 252, 0.2);
     }
@@ -145,9 +301,21 @@
       color: #f85149;
     }
 
-    .btn-danger:hover {
+    .btn-danger:hover:not(:disabled) {
       background-color: rgba(248, 81, 73, 0.12);
       border-color: #f85149;
+    }
+
+    .btn-subtle {
+      background-color: transparent;
+      color: #8b949e;
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+
+    .btn-subtle:hover {
+      color: #e6edf3;
+      background-color: #21262d;
     }
 
     .progress-wrap {
@@ -198,19 +366,28 @@
       border-top: 1px solid #21262d;
     }
 
-    .search-input {
-      flex: 1;
-      min-width: 190px;
+    .search-input, .text-input {
       background-color: #0d1117;
       padding: 7px 12px;
       outline: none;
     }
 
-    .search-input::placeholder {
+    .search-input {
+      flex: 1;
+      min-width: 190px;
+    }
+
+    .text-input {
+      width: 100%;
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+
+    .search-input::placeholder, .text-input::placeholder {
       color: #6e7681;
     }
 
-    .search-input:focus {
+    .search-input:focus, .text-input:focus {
       border-color: #58a6ff;
     }
 
@@ -299,6 +476,49 @@
     .item-name-wrap {
       min-width: 0;
       display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .item-icon-slot {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .item-icon {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      display: block;
+    }
+
+    .item-icon-fallback {
+      width: 16px;
+      height: 16px;
+      color: #6e7681;
+      display: none;
+    }
+
+    .item-icon-slot.fallback .item-icon {
+      display: none;
+    }
+
+    .item-icon-slot.fallback .item-icon-fallback {
+      display: block;
+    }
+
+    .item-text-group {
+      min-width: 0;
+      display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 6px;
@@ -377,6 +597,115 @@
       color: #c9d1d9;
     }
 
+    .hidden {
+      display: none !important;
+    }
+
+    /* Upload Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(1, 4, 9, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 520px;
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f0f6fc;
+    }
+
+    .dropzone {
+      border: 2px dashed #30363d;
+      border-radius: 10px;
+      background-color: #0d1117;
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background-color 0.15s;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: #58a6ff;
+      background-color: rgba(31, 111, 235, 0.08);
+    }
+
+    .dropzone-main {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #e6edf3;
+    }
+
+    .dropzone-sub {
+      font-size: 12px;
+      color: #8b949e;
+      margin-top: 4px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #c9d1d9;
+      margin-bottom: 6px;
+    }
+
+    .preview-box {
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #c9d1d9;
+    }
+
+    .preview-box.error {
+      border-color: rgba(248, 81, 73, 0.5);
+      background-color: rgba(248, 81, 73, 0.08);
+      color: #f85149;
+    }
+
+    .preview-box.ok {
+      border-color: rgba(63, 185, 80, 0.45);
+      background-color: rgba(63, 185, 80, 0.08);
+      color: #3fb950;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
     .toast {
       position: fixed;
       bottom: 20px;
@@ -392,6 +721,7 @@
       pointer-events: none;
       transition: opacity 0.2s, transform 0.2s;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      z-index: 200;
     }
 
     .toast.show {
@@ -401,7 +731,8 @@
 
     @media (max-width: 640px) {
       body { padding: 10px; }
-      .header-card { padding: 14px; }
+      .library-card, .header-card { padding: 14px; }
+      .list-tab { min-width: 135px; flex: 1 1 45%; max-width: none; }
       .table-header, .list-row {
         grid-template-columns: 24px 1fr auto;
         gap: 8px;
@@ -414,29 +745,51 @@
 </head>
 <body>
   <div class="container">
-    <div class="card header-card">
+    <!-- Saved Lists Library -->
+    <div class="card library-card">
+      <div class="library-top">
+        <div class="brand-row">
+          <span class="brand-title">Litematica Material Lists</span>
+          <span id="syncPill" class="sync-pill">
+            <span class="sync-dot"></span>
+            <span id="syncText">โหมดเครื่องเดียว</span>
+          </span>
+        </div>
+        <div class="actions">
+          <button id="openUploadBtn" type="button" class="btn btn-primary">+ อัปโหลดลิสต์ (.txt)</button>
+        </div>
+      </div>
+
+      <div id="savedListsContainer" class="saved-lists"></div>
+
+      <div id="emptyLibrary" class="empty-library hidden">
+        <div>ยังไม่มีลิสต์ที่บันทึกไว้ กดปุ่มด้านล่างเพื่ออัปโหลดไฟล์ <code>.txt</code> จาก Litematica</div>
+        <button id="emptyUploadBtn" type="button" class="btn btn-primary">+ อัปโหลดไฟล์ material_list.txt</button>
+      </div>
+    </div>
+
+    <!-- Active Checklist Header -->
+    <div id="activeHeaderCard" class="card header-card hidden">
       <div class="header-top">
         <div>
           <div class="title-row">
-            <h1>เช็คลิสต์วัสดุ: Unnamed</h1>
-            <span id="syncPill" class="sync-pill">
-              <span class="sync-dot"></span>
-              <span id="syncText">โหมดเครื่องเดียว</span>
-            </span>
+            <h1 id="activeListTitle">เช็คลิสต์วัสดุ</h1>
+            <button id="renameListBtn" type="button" class="btn btn-subtle">เปลี่ยนชื่อ</button>
           </div>
-          <p class="subtitle">60 ชนิดไอเทม • รวม 20,080 ชิ้น • อ้างอิง Litematica Material List (ปัดเศษขึ้นเป็น stack)</p>
+          <p id="activeListSubtitle" class="subtitle"></p>
         </div>
         <div class="actions">
-          <button id="shareLinkBtn" type="button" class="btn btn-primary">แชร์ลิงก์ความคืบหน้า</button>
+          <button id="shareLinkBtn" type="button" class="btn btn-primary">แชร์ลิงก์ลิสต์นี้</button>
           <button id="copyRemainingBtn" type="button" class="btn">คัดลอกของที่ยังขาด</button>
-          <button id="resetBtn" type="button" class="btn btn-danger">รีเซ็ต</button>
+          <button id="resetBtn" type="button" class="btn btn-danger">รีเซ็ตติ๊ก</button>
+          <button id="deleteListBtn" type="button" class="btn btn-danger">ลบลิสต์</button>
         </div>
       </div>
 
       <div class="progress-wrap">
         <div class="progress-meta">
-          <span id="progressLabel" class="progress-label">เตรียมแล้ว 0 / 60 ชนิด (0%)</span>
-          <span id="stackSummary" class="stack-summary">เหลือ 399 stack (~15 Shulker)</span>
+          <span id="progressLabel" class="progress-label">เตรียมแล้ว 0 / 0 ชนิด (0%)</span>
+          <span id="stackSummary" class="stack-summary">เหลือ 0 stack</span>
         </div>
         <div class="progress-track">
           <div id="progressBar" class="progress-fill"></div>
@@ -460,7 +813,8 @@
       </div>
     </div>
 
-    <div class="card">
+    <!-- Active Checklist Table -->
+    <div id="activeTableCard" class="card hidden">
       <div class="table-header">
         <span style="text-align:center;">✓</span>
         <span>ไอเทม</span>
@@ -473,102 +827,160 @@
     </div>
 
     <p class="footnote">
-      * ข้อมูลจาก <code>material_list_2026-11-23_20.48.48.txt</code> (60 ชนิด, 20,080 ชิ้น) | หากต้องการให้ติ๊กพร้อมกันแบบเรียลไทม์ 2 เครื่อง ให้วาง URL ของ Firebase Realtime Database ในตัวแปร <code>FIREBASE_DB_URL</code> ในไฟล์นี้
+      * รองรับไฟล์ <code>.txt</code> จาก Litematica Material List (Export ASCII Table) | ซิงค์ลิสต์และการติ๊กแบบเรียลไทม์ผ่าน <code>FIREBASE_DB_URL</code> ที่ path <code>/lists</code>
     </p>
+  </div>
+
+  <!-- Upload Modal -->
+  <div id="uploadModal" class="modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="uploadModalTitle">
+      <div class="modal-header">
+        <span id="uploadModalTitle" class="modal-title">อัปโหลด Material List (.txt)</span>
+        <button id="closeUploadBtn" type="button" class="btn btn-subtle">ปิด</button>
+      </div>
+
+      <div id="dropzone" class="dropzone">
+        <div class="dropzone-main">คลิกเพื่อเลือกไฟล์ .txt หรือลากไฟล์มาวางที่นี่</div>
+        <div class="dropzone-sub">เช่น material_list_2026-11-23_20.48.48.txt จากโฟลเดอร์ config/litematica</div>
+        <input id="fileInput" type="file" accept=".txt,text/plain" class="hidden" />
+      </div>
+
+      <div>
+        <label for="listNameInput" class="field-label">ชื่อลิสต์</label>
+        <input id="listNameInput" type="text" class="text-input" placeholder="เช่น บ้านไม้, โกดังเก็บของ, Unnamed..." />
+      </div>
+
+      <div id="uploadPreview" class="preview-box hidden"></div>
+
+      <div class="modal-footer">
+        <button id="cancelUploadBtn" type="button" class="btn">ยกเลิก</button>
+        <button id="confirmUploadBtn" type="button" class="btn btn-primary" disabled>บันทึกลิสต์</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rename Modal -->
+  <div id="renameModal" class="modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="renameModalTitle" style="max-width:420px;">
+      <div class="modal-header">
+        <span id="renameModalTitle" class="modal-title">แก้ไขชื่อลิสต์</span>
+        <button id="closeRenameBtn" type="button" class="btn btn-subtle">ปิด</button>
+      </div>
+      <div>
+        <label for="renameInput" class="field-label">ชื่อลิสต์ใหม่</label>
+        <input id="renameInput" type="text" class="text-input" placeholder="กรอกชื่อลิสต์..." />
+      </div>
+      <div class="modal-footer">
+        <button id="cancelRenameBtn" type="button" class="btn">ยกเลิก</button>
+        <button id="confirmRenameBtn" type="button" class="btn btn-primary">บันทึกชื่อ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div id="deleteModal" class="modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle" style="max-width:420px;">
+      <div class="modal-header">
+        <span id="deleteModalTitle" class="modal-title">ยืนยันการลบลิสต์</span>
+        <button id="closeDeleteBtn" type="button" class="btn btn-subtle">ปิด</button>
+      </div>
+      <p id="deleteConfirmText" style="font-size:13px; color:#c9d1d9;"></p>
+      <div class="modal-footer">
+        <button id="cancelDeleteBtn" type="button" class="btn">ยกเลิก</button>
+        <button id="confirmDeleteBtn" type="button" class="btn btn-danger">ลบลิสต์ถาวร</button>
+      </div>
+    </div>
   </div>
 
   <div id="toast" class="toast"></div>
 
   <script>
     // =========================================================================
-    // [ตั้งค่าซิงค์เรียลไทม์ 2 เครื่อง]
+    // [ตั้งค่าซิงค์เรียลไทม์ออนไลน์]
     // วาง URL ของ Firebase Realtime Database ด้านล่างนี้ (ไม่ต้องมี / ต่อท้าย)
-    // ตัวอย่าง: "https://my-mc-checklist-default-rtdb.asia-southeast1.firebasedatabase.app"
-    // ถ้าเว้นว่าง "" ไว้ จะทำงานแบบบันทึกลงเครื่องตัวเอง + แชร์ผ่านลิงก์ได้ตามปกติ
+    // ถ้าเว้นว่าง "" ไว้ จะเก็บลิสต์ทั้งหมดไว้ในเครื่องตัวเอง (localStorage)
     // =========================================================================
     const FIREBASE_DB_URL = "https://cccc-80686-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-    const ITEMS = [
-      { key: "red_wool", name: "Red Wool", count: 1888, sb: "1.09 SB", stackSize: 64 },
-      { key: "dark_oak_wood", name: "Dark Oak Wood", count: 1497, sb: "0.87 SB", stackSize: 64 },
-      { key: "stripped_spruce_wood", name: "Stripped Spruce Wood", count: 1457, sb: "0.84 SB", stackSize: 64 },
-      { key: "chest", name: "Chest", count: 1419, sb: "0.82 SB", stackSize: 64 },
-      { key: "stripped_birch_wood", name: "Stripped Birch Wood", count: 1277, sb: "0.74 SB", stackSize: 64 },
-      { key: "stripped_oak_wood", name: "Stripped Oak Wood", count: 1197, sb: "0.69 SB", stackSize: 64 },
-      { key: "hopper", name: "Hopper", count: 1183, sb: "0.68 SB", stackSize: 64 },
-      { key: "redstone_dust", name: "Redstone Dust", count: 706, sb: "0.41 SB", stackSize: 64 },
-      { key: "jungle_leaves", name: "Jungle Leaves", count: 620, sb: "0.36 SB", stackSize: 64 },
-      { key: "acacia_slab", name: "Acacia Slab", count: 572, sb: "0.33 SB", stackSize: 64 },
-      { key: "cobbled_deepslate_slab", name: "Cobbled Deepslate Slab", count: 474, sb: "0.27 SB", stackSize: 64 },
-      { key: "stripped_dark_oak_wood", name: "Stripped Dark Oak Wood", count: 457, sb: "0.26 SB", stackSize: 64 },
-      { key: "packed_ice", name: "Packed Ice", count: 440, sb: "0.25 SB", stackSize: 64 },
-      { key: "deepslate_brick_slab", name: "Deepslate Brick Slab", count: 433, sb: "0.25 SB", stackSize: 64 },
-      { key: "deepslate_tile_slab", name: "Deepslate Tile Slab", count: 429, sb: "0.25 SB", stackSize: 64 },
-      { key: "lime_stained_glass", name: "Lime Stained Glass", count: 424, sb: "0.25 SB", stackSize: 64 },
-      { key: "cobblestone_wall", name: "Cobblestone Wall", count: 382, sb: "0.22 SB", stackSize: 64 },
-      { key: "birch_slab", name: "Birch Slab", count: 289, sb: "0.17 SB", stackSize: 64 },
-      { key: "black_concrete", name: "Black Concrete", count: 277, sb: "0.16 SB", stackSize: 64 },
-      { key: "green_concrete_powder", name: "Green Concrete Powder", count: 261, sb: "0.15 SB", stackSize: 64 },
-      { key: "item_frame", name: "Item Frame", count: 237, sb: "0.14 SB", stackSize: 64 },
-      { key: "barrel", name: "Barrel", count: 236, sb: "0.14 SB", stackSize: 64 },
-      { key: "redstone_comparator", name: "Redstone Comparator", count: 236, sb: "0.14 SB", stackSize: 64 },
-      { key: "redstone_repeater", name: "Redstone Repeater", count: 235, sb: "0.14 SB", stackSize: 64 },
-      { key: "redstone_lamp", name: "Redstone Lamp", count: 234, sb: "0.14 SB", stackSize: 64 },
-      { key: "redstone_torch", name: "Redstone Torch", count: 232, sb: "0.13 SB", stackSize: 64 },
-      { key: "birch_stairs", name: "Birch Stairs", count: 231, sb: "0.13 SB", stackSize: 64 },
-      { key: "black_stained_glass", name: "Black Stained Glass", count: 225, sb: "0.13 SB", stackSize: 64 },
-      { key: "gray_stained_glass", name: "Gray Stained Glass", count: 225, sb: "0.13 SB", stackSize: 64 },
-      { key: "birch_fence", name: "Birch Fence", count: 209, sb: "0.12 SB", stackSize: 64 },
-      { key: "oak_slab", name: "Oak Slab", count: 204, sb: "0.12 SB", stackSize: 64 },
-      { key: "spruce_slab", name: "Spruce Slab", count: 200, sb: "0.12 SB", stackSize: 64 },
-      { key: "spruce_stairs", name: "Spruce Stairs", count: 186, sb: "0.11 SB", stackSize: 64 },
-      { key: "green_stained_glass", name: "Green Stained Glass", count: 161, sb: "0.09 SB", stackSize: 64 },
-      { key: "shroomlight", name: "Shroomlight", count: 143, sb: "0.08 SB", stackSize: 64 },
-      { key: "polished_granite_stairs", name: "Polished Granite Stairs", count: 107, sb: "0.06 SB", stackSize: 64 },
-      { key: "spruce_trapdoor", name: "Spruce Trapdoor", count: 99, sb: "0.06 SB", stackSize: 64 },
-      { key: "bookshelf", name: "Bookshelf", count: 91, sb: "0.05 SB", stackSize: 64 },
-      { key: "acacia_stairs", name: "Acacia Stairs", count: 90, sb: "0.05 SB", stackSize: 64 },
-      { key: "mangrove_roots", name: "Mangrove Roots", count: 89, sb: "0.05 SB", stackSize: 64 },
-      { key: "stripped_oak_log", name: "Stripped Oak Log", count: 84, sb: "0.05 SB", stackSize: 64 },
-      { key: "acacia_fence", name: "Acacia Fence", count: 72, sb: "0.04 SB", stackSize: 64 },
-      { key: "iron_chain", name: "Iron Chain", count: 72, sb: "0.04 SB", stackSize: 64 },
-      { key: "lantern", name: "Lantern", count: 72, sb: "0.04 SB", stackSize: 64 },
-      { key: "stripped_spruce_log", name: "Stripped Spruce Log", count: 58, sb: "0.03 SB", stackSize: 64 },
-      { key: "birch_trapdoor", name: "Birch Trapdoor", count: 56, sb: "0.03 SB", stackSize: 64 },
-      { key: "water_bucket", name: "Water Bucket", count: 52, sb: "1.93 SB", stackSize: 1 },
-      { key: "birch_sign", name: "Birch Sign", count: 50, sb: "0.12 SB", stackSize: 16 },
-      { key: "glass", name: "Glass", count: 49, sb: "0.03 SB", stackSize: 64 },
-      { key: "stripped_dark_oak_log", name: "Stripped Dark Oak Log", count: 36, sb: "0.02 SB", stackSize: 64 },
-      { key: "chiseled_bookshelf", name: "Chiseled Bookshelf", count: 34, sb: "0.02 SB", stackSize: 64 },
-      { key: "deepslate_tile_stairs", name: "Deepslate Tile Stairs", count: 32, sb: "0.02 SB", stackSize: 64 },
-      { key: "glowstone", name: "Glowstone", count: 25, sb: "0.01 SB", stackSize: 64 },
-      { key: "acacia_trapdoor", name: "Acacia Trapdoor", count: 15, sb: "0.01 SB", stackSize: 64 },
-      { key: "dark_oak_stairs", name: "Dark Oak Stairs", count: 10, sb: "0.01 SB", stackSize: 64 },
-      { key: "stripped_jungle_wood", name: "Stripped Jungle Wood", count: 4, sb: "0.00 SB", stackSize: 64 },
-      { key: "dropper", name: "Dropper", count: 2, sb: "0.00 SB", stackSize: 64 },
-      { key: "oak_trapdoor", name: "Oak Trapdoor", count: 2, sb: "0.00 SB", stackSize: 64 },
-      { key: "soul_sand", name: "Soul Sand", count: 2, sb: "0.00 SB", stackSize: 64 },
-      { key: "target", name: "Target", count: 1, sb: "0.00 SB", stackSize: 64 }
-    ].map((item, idx) => ({
-      ...item,
-      idx,
-      stacks: Math.ceil(item.count / item.stackSize)
-    }));
-
-    const STORAGE_KEY = "mc_checklist_unnamed_v2";
+    const STORAGE_KEY = "mc_litematica_lists_v1";
+    const ACTIVE_LIST_KEY = "mc_litematica_active_id_v1";
     const DB_URL = FIREBASE_DB_URL.trim().replace(/\/+$/, "");
-    let checkedSet = new Set();
+
+    // State
+    let listsMap = {}; // { [id]: { meta, items, checked } }
+    let activeListId = null;
     let currentFilter = "all";
     let currentSort = "count_desc";
     let searchQuery = "";
     let toastTimer = null;
+    let pendingUpload = null;
+    let modalTargetListId = null;
 
+    // --- Minecraft Item Icons (3D 1.21.4 + Official 26.3 Fallback) ---
+    const ITEM_ICON_3D_BASE = "https://mc.nerothe.com/img/1.21.4/minecraft_";
+    const ITEM_ICON_26_BASE = "https://assets.mcasset.cloud/26.3/assets/minecraft/textures";
+    const ITEM_ICON_ALIASES_26 = {
+      redstone_dust: "redstone",
+      redstone_comparator: "comparator",
+      redstone_repeater: "repeater",
+      block_of_lapis_lazuli: "lapis_block",
+      block_of_stripped_bamboo: "stripped_bamboo_block",
+      hay_bale: "hay_block",
+      slimeball: "slime_ball",
+      weighted_pressure_plate_light: "light_weighted_pressure_plate",
+      weighted_pressure_plate_heavy: "heavy_weighted_pressure_plate"
+    };
+    const ITEM_ICON_ALIASES_LEGACY = {
+      iron_chain: "chain"
+    };
+
+    function toRegistryId(itemName) {
+      let id = String(itemName || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "_")
+        .replace(/^_+|_+$/g, "");
+      if (ITEM_ICON_ALIASES_26[id]) return ITEM_ICON_ALIASES_26[id];
+      if (id.startsWith("block_of_")) return id.slice("block_of_".length) + "_block";
+      if (id.startsWith("minecart_with_")) return id.slice("minecart_with_".length) + "_minecart";
+      return id;
+    }
+
+    function getItemIconCandidates(itemName) {
+      const id26 = toRegistryId(itemName);
+      const idLegacy = ITEM_ICON_ALIASES_LEGACY[id26] || id26;
+      const enc26 = encodeURIComponent(id26);
+      const encLegacy = encodeURIComponent(idLegacy);
+
+      const candidates = [
+        `${ITEM_ICON_3D_BASE}${encLegacy}.png`,
+        `${ITEM_ICON_26_BASE}/item/${enc26}.png`,
+        `${ITEM_ICON_26_BASE}/block/${enc26}.png`
+      ];
+
+      // Base-block texture fallback for derived blocks (slab/stairs/wall/fence/wood) in 26.3
+      const baseMatch = id26.match(/^(.+?)_(slab|stairs|wall|fence|fence_gate|pressure_plate|button|wood)$/);
+      if (baseMatch) {
+        const stem = baseMatch[1];
+        candidates.push(`${ITEM_ICON_26_BASE}/block/${encodeURIComponent(stem)}.png`);
+        candidates.push(`${ITEM_ICON_26_BASE}/block/${encodeURIComponent(stem + "s")}.png`);
+        candidates.push(`${ITEM_ICON_26_BASE}/block/${encodeURIComponent(stem + "_planks")}.png`);
+        candidates.push(`${ITEM_ICON_26_BASE}/block/${encodeURIComponent(stem + "_log")}.png`);
+      }
+
+      return [...new Set(candidates)];
+    }
+
+    const SVG_EDIT = `<svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"/></svg>`;
+    const SVG_DELETE = `<svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"/></svg>`;
+    const SVG_CUBE = `<svg class="item-icon-fallback" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M7.63 1.09a.75.75 0 0 1 .74 0l6 3.38A.75.75 0 0 1 14.75 5.1v5.8a.75.75 0 0 1-.38.65l-6 3.38a.75.75 0 0 1-.74 0l-6-3.38a.75.75 0 0 1-.38-.65V5.1a.75.75 0 0 1 .38-.63l6-3.38ZM8 2.61 3.37 5.22 8 7.83l4.63-2.61L8 2.61ZM2.75 6.57v3.89l4.5 2.53V9.1l-4.5-2.53Zm6 6.42 4.5-2.53V6.57L8.75 9.1v3.89Z"/></svg>`;
+
+    // --- Utilities ---
     function showToast(msg) {
       const el = document.getElementById("toast");
       el.textContent = msg;
       el.classList.add("show");
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
     }
 
     function setSyncStatus(online, text) {
@@ -578,105 +990,345 @@
       label.textContent = text;
     }
 
-    function encodeState() {
-      let lo = 0, hi = 0;
-      for (const item of ITEMS) {
-        if (checkedSet.has(item.key)) {
-          if (item.idx < 30) lo |= (1 << item.idx);
-          else hi |= (1 << (item.idx - 30));
-        }
-      }
-      return `${hi.toString(36)}-${lo.toString(36)}`;
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
     }
 
-    function decodeState(str) {
-      const parts = str.split("-");
-      if (parts.length !== 2) return null;
-      const hi = parseInt(parts[0], 36);
-      const lo = parseInt(parts[1], 36);
-      if (Number.isNaN(hi) || Number.isNaN(lo)) return null;
-      const set = new Set();
-      for (const item of ITEMS) {
-        const bit = item.idx < 30 ? (lo & (1 << item.idx)) : (hi & (1 << (item.idx - 30)));
-        if (bit) set.add(item.key);
+    function makeSafeKey(name, usedKeys) {
+      let base = name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "_")
+        .replace(/^_+|_+$/g, "");
+      if (!base) base = "item";
+      let key = base;
+      let n = 2;
+      while (usedKeys.has(key)) {
+        key = `${base}_${n++}`;
       }
-      return set;
+      usedKeys.add(key);
+      return key;
     }
 
-    function loadLocalState() {
-      const hash = window.location.hash || "";
-      if (hash.startsWith("#s=")) {
-        const decoded = decodeState(hash.slice(3));
-        if (decoded) {
-          checkedSet = decoded;
-          saveLocalState(false);
-          return;
+    function generateListId() {
+      const ts = Date.now().toString(36);
+      const rand = Math.random().toString(36).slice(2, 7);
+      return `list_${ts}_${rand}`;
+    }
+
+    // --- Litematica .txt Parser ---
+    function inferStackSize(itemName, count, sbText) {
+      // 1) Cross-check with Total (sb) when available & reliable
+      if (sbText) {
+        const m = sbText.match(/([\d.]+)/);
+        if (m) {
+          const sbVal = parseFloat(m[1]);
+          if (!Number.isNaN(sbVal) && sbVal >= 0.05 && count > 0) {
+            const candidates = [1, 16, 64];
+            let best = 64;
+            let bestDiff = Infinity;
+            for (const s of candidates) {
+              const expected = count / (27 * s);
+              const diff = Math.abs(expected - sbVal);
+              if (diff < bestDiff) {
+                bestDiff = diff;
+                best = s;
+              }
+            }
+            if (bestDiff <= 0.02) return best;
+          }
         }
       }
+
+      // 2) Fallback by item name patterns (Minecraft stack sizes)
+      const n = itemName.toLowerCase();
+      const stack1Patterns = [
+        /\b(water|lava|milk|powder snow|axolotl|cod|pufferfish|salmon|tadpole|tropical fish)\s+bucket\b/,
+        /\bboat\b/, /\braft\b/, /\bminecart\b/, /\bbed\b/,
+        /\bshulker box\b/, /\bcake\b/, /\bpotion\b/, /\bsoup\b/, /\bstew\b/,
+        /\bsaddle\b/, /\bhorse armor\b/, /\btotem\b/, /\btrident\b/,
+        /\belytra\b/, /\bshield\b/, /\bspyglass\b/, /\bshears\b/,
+        /\bflint and steel\b/, /\bfishing rod\b/, /\bmusic disc\b/,
+        /\benchanted book\b/, /\bwritable book\b/, /\bwritten book\b/
+      ];
+      if (stack1Patterns.some(rx => rx.test(n))) return 1;
+
+      const stack16Patterns = [
+        /\bbucket\b/, /\bsign\b/, /\bbanner\b/, /\bender pearl\b/, /\bsnowball\b/,
+        /\begg\b/, /\bhoney bottle\b/, /\barmor stand\b/
+      ];
+      if (stack16Patterns.some(rx => rx.test(n))) return 16;
+
+      return 64;
+    }
+
+    function parseLitematicaTxt(rawText, fileName = "") {
+      const lines = rawText.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+      let detectedTitle = "";
+      let colMap = null;
+      const items = [];
+      const usedKeys = new Set();
+
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (!line || line.startsWith("+")) continue;
+        if (!line.startsWith("|")) continue;
+
+        // Title line: | Material List for schematic 'Unnamed' (1 of 1 regions) |
+        if (!detectedTitle && /material list for/i.test(line)) {
+          const quoted = line.match(/'([^']+)'/);
+          if (quoted && quoted[1].trim()) {
+            detectedTitle = quoted[1].trim();
+          } else {
+            const inner = line.replace(/^\||\|$/g, "").trim();
+            detectedTitle = inner.replace(/^material list for\s*/i, "").trim();
+          }
+          continue;
+        }
+
+        const cells = line
+          .replace(/^\||\|$/g, "")
+          .split("|")
+          .map(c => c.trim());
+
+        if (cells.length < 2) continue;
+
+        // Header or repeated footer row
+        if (cells[0].toLowerCase() === "item" && cells[1].toLowerCase() === "total") {
+          colMap = {};
+          cells.forEach((c, idx) => {
+            colMap[c.toLowerCase()] = idx;
+          });
+          continue;
+        }
+
+        const itemIdx = colMap && colMap["item"] !== undefined ? colMap["item"] : 0;
+        const totalIdx = colMap && colMap["total"] !== undefined ? colMap["total"] : 1;
+        const sbIdx = colMap && colMap["total (sb)"] !== undefined ? colMap["total (sb)"] : 4;
+
+        const name = (cells[itemIdx] || "").trim();
+        const totalStr = (cells[totalIdx] || "").replace(/,/g, "").trim();
+        const count = parseInt(totalStr, 10);
+
+        if (!name || Number.isNaN(count) || count <= 0) continue;
+
+        const rawSb = cells[sbIdx] ? cells[sbIdx].trim() : "";
+        const stackSize = inferStackSize(name, count, rawSb);
+        const sb = rawSb || `${(count / (stackSize * 27)).toFixed(2)} SB`;
+        const key = makeSafeKey(name, usedKeys);
+
+        items.push({ key, name, count, sb, stackSize });
+      }
+
+      if (!detectedTitle && fileName) {
+        detectedTitle = fileName.replace(/\.txt$/i, "");
+      }
+
+      return {
+        title: detectedTitle || "Untitled List",
+        items,
+        totalCount: items.reduce((sum, i) => sum + i.count, 0)
+      };
+    }
+
+    // --- Normalization & Storage ---
+    function normalizeList(id, raw) {
+      if (!raw || typeof raw !== "object") return null;
+      const rawItems = Array.isArray(raw.items)
+        ? raw.items.filter(Boolean)
+        : (raw.items && typeof raw.items === "object" ? Object.values(raw.items).filter(Boolean) : []);
+      const items = rawItems.map((it, idx) => {
+        const stackSize = Number(it.stackSize) || 64;
+        const count = Number(it.count) || 0;
+        return {
+          key: String(it.key || `item_${idx}`),
+          name: String(it.name || "Unknown"),
+          count,
+          sb: String(it.sb || `${(count / (stackSize * 27)).toFixed(2)} SB`),
+          stackSize,
+          stacks: Math.ceil(count / stackSize)
+        };
+      });
+      const checked = {};
+      if (raw.checked && typeof raw.checked === "object") {
+        for (const [k, v] of Object.entries(raw.checked)) {
+          if (v === true) checked[k] = true;
+        }
+      }
+      const meta = raw.meta && typeof raw.meta === "object" ? raw.meta : {};
+      return {
+        meta: {
+          id,
+          name: String(meta.name || id),
+          fileName: String(meta.fileName || ""),
+          createdAt: Number(meta.createdAt) || 0,
+          totalItems: items.length,
+          totalCount: items.reduce((s, i) => s + i.count, 0)
+        },
+        items,
+        checked
+      };
+    }
+
+    function getSortedLists() {
+      return Object.values(listsMap).sort((a, b) => (b.meta.createdAt || 0) - (a.meta.createdAt || 0));
+    }
+
+    function loadLocalCache() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) checkedSet = new Set(parsed);
+          if (parsed && typeof parsed === "object") {
+            const next = {};
+            for (const [id, val] of Object.entries(parsed)) {
+              const norm = normalizeList(id, val);
+              if (norm) next[id] = norm;
+            }
+            listsMap = next;
+          }
         }
+      } catch (_) {}
+
+      const hashId = readHashListId();
+      if (hashId && listsMap[hashId]) {
+        activeListId = hashId;
+      } else {
+        try {
+          const savedActive = localStorage.getItem(ACTIVE_LIST_KEY);
+          if (savedActive && listsMap[savedActive]) activeListId = savedActive;
+        } catch (_) {}
+      }
+      ensureValidActiveList();
+    }
+
+    function saveLocalCache() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(listsMap));
+        if (activeListId) localStorage.setItem(ACTIVE_LIST_KEY, activeListId);
+        else localStorage.removeItem(ACTIVE_LIST_KEY);
       } catch (_) {}
     }
 
-    function saveLocalState(updateHash = true) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([...checkedSet]));
-      } catch (_) {}
-      if (updateHash && !DB_URL) {
-        try {
-          const nextHash = checkedSet.size > 0 ? `#s=${encodeState()}` : "";
-          history.replaceState(null, "", nextHash || window.location.pathname + window.location.search);
-        } catch (_) {}
+    function readHashListId() {
+      const hash = window.location.hash || "";
+      if (hash.startsWith("#list=")) {
+        return decodeURIComponent(hash.slice(6));
       }
+      return null;
+    }
+
+    function updateUrlHash() {
+      try {
+        const nextHash = activeListId ? `#list=${encodeURIComponent(activeListId)}` : "";
+        history.replaceState(null, "", nextHash || window.location.pathname + window.location.search);
+      } catch (_) {}
+    }
+
+    function ensureValidActiveList() {
+      const hashId = readHashListId();
+      if (hashId && listsMap[hashId]) {
+        activeListId = hashId;
+        return;
+      }
+      if (activeListId && listsMap[activeListId]) return;
+      const all = getSortedLists();
+      activeListId = all.length > 0 ? all[0].meta.id : null;
     }
 
     // --- Real-time Firebase RTDB (REST + SSE EventSource) ---
-    function applyRemoteData(path, data) {
-      if (path === "/") {
-        checkedSet.clear();
-        if (data && typeof data === "object") {
+    function applyPathUpdate(path, data, isPatch = false) {
+      const segments = path.split("/").filter(Boolean);
+
+      if (segments.length === 0) {
+        if (!isPatch) {
+          listsMap = {};
+          if (data && typeof data === "object") {
+            for (const [id, val] of Object.entries(data)) {
+              const norm = normalizeList(id, val);
+              if (norm) listsMap[id] = norm;
+            }
+          }
+        } else if (data && typeof data === "object") {
           for (const [k, v] of Object.entries(data)) {
-            if (v === true) checkedSet.add(k);
+            applyPathUpdate("/" + k, v, false);
           }
         }
-      } else {
-        const key = path.replace(/^\//, "");
-        if (data === true) checkedSet.add(key);
-        else checkedSet.delete(key);
+        return;
       }
-      saveLocalState(false);
-      updateSummary();
-      renderList();
+
+      const [listId, section, subKey] = segments;
+
+      if (segments.length === 1) {
+        if (data === null) {
+          delete listsMap[listId];
+        } else if (isPatch && listsMap[listId] && typeof data === "object") {
+          for (const [k, v] of Object.entries(data)) {
+            applyPathUpdate(`/${listId}/${k}`, v, false);
+          }
+        } else {
+          const norm = normalizeList(listId, data);
+          if (norm) listsMap[listId] = norm;
+        }
+        return;
+      }
+
+      if (!listsMap[listId]) return;
+
+      if (section === "checked") {
+        if (segments.length === 2) {
+          if (!isPatch) {
+            listsMap[listId].checked = {};
+          }
+          if (data && typeof data === "object") {
+            for (const [k, v] of Object.entries(data)) {
+              if (v === true) listsMap[listId].checked[k] = true;
+              else delete listsMap[listId].checked[k];
+            }
+          }
+        } else if (segments.length === 3) {
+          if (data === true) listsMap[listId].checked[subKey] = true;
+          else delete listsMap[listId].checked[subKey];
+        }
+        return;
+      }
+
+      if (section === "meta") {
+        if (segments.length === 2 && data && typeof data === "object") {
+          Object.assign(listsMap[listId].meta, data);
+        } else if (segments.length === 3 && subKey) {
+          listsMap[listId].meta[subKey] = data;
+        }
+      }
     }
 
     function initRealtimeSync() {
       if (!DB_URL) return;
       setSyncStatus(false, "กำลังเชื่อมต่อเรียลไทม์...");
       try {
-        const es = new EventSource(`${DB_URL}/checklist.json`);
+        const es = new EventSource(`${DB_URL}/lists.json`);
         es.addEventListener("open", () => {
           setSyncStatus(true, "ออนไลน์ (เรียลไทม์)");
         });
         es.addEventListener("put", (e) => {
           setSyncStatus(true, "ออนไลน์ (เรียลไทม์)");
           const payload = JSON.parse(e.data);
-          applyRemoteData(payload.path, payload.data);
+          applyPathUpdate(payload.path, payload.data, false);
+          ensureValidActiveList();
+          saveLocalCache();
+          renderAll();
         });
         es.addEventListener("patch", (e) => {
+          setSyncStatus(true, "ออนไลน์ (เรียลไทม์)");
           const payload = JSON.parse(e.data);
-          if (payload.data && typeof payload.data === "object") {
-            for (const [k, v] of Object.entries(payload.data)) {
-              if (v === true) checkedSet.add(k);
-              else checkedSet.delete(k);
-            }
-            saveLocalState(false);
-            updateSummary();
-            renderList();
-          }
+          applyPathUpdate(payload.path, payload.data, true);
+          ensureValidActiveList();
+          saveLocalCache();
+          renderAll();
         });
         es.onerror = () => {
           setSyncStatus(false, "เชื่อมต่อขาดหาย กำลังลองใหม่...");
@@ -686,10 +1338,26 @@
       }
     }
 
-    async function pushItemToggle(key, isChecked) {
+    async function pushNewList(listObj) {
+      if (!DB_URL) return true;
+      try {
+        const res = await fetch(`${DB_URL}/lists/${encodeURIComponent(listObj.meta.id)}.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(listObj)
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return true;
+      } catch (_) {
+        showToast("อัปโหลดขึ้นออนไลน์ไม่สำเร็จ (บันทึกในเครื่องไว้แล้ว)");
+        return false;
+      }
+    }
+
+    async function pushItemToggle(listId, key, isChecked) {
       if (!DB_URL) return;
       try {
-        await fetch(`${DB_URL}/checklist/${encodeURIComponent(key)}.json`, {
+        await fetch(`${DB_URL}/lists/${encodeURIComponent(listId)}/checked/${encodeURIComponent(key)}.json`, {
           method: isChecked ? "PUT" : "DELETE",
           headers: { "Content-Type": "application/json" },
           body: isChecked ? "true" : undefined
@@ -699,28 +1367,143 @@
       }
     }
 
-    async function pushResetAll() {
+    async function pushResetList(listId) {
       if (!DB_URL) return;
       try {
-        await fetch(`${DB_URL}/checklist.json`, { method: "DELETE" });
+        await fetch(`${DB_URL}/lists/${encodeURIComponent(listId)}/checked.json`, { method: "DELETE" });
       } catch (_) {
         showToast("รีเซ็ตบนเซิร์ฟเวอร์ไม่สำเร็จ");
       }
     }
 
+    async function pushRenameList(listId, newName) {
+      if (!DB_URL) return;
+      try {
+        await fetch(`${DB_URL}/lists/${encodeURIComponent(listId)}/meta/name.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newName)
+        });
+      } catch (_) {
+        showToast("เปลี่ยนชื่อบนเซิร์ฟเวอร์ไม่สำเร็จ");
+      }
+    }
+
+    async function pushDeleteList(listId) {
+      if (!DB_URL) return;
+      try {
+        await fetch(`${DB_URL}/lists/${encodeURIComponent(listId)}.json`, { method: "DELETE" });
+      } catch (_) {
+        showToast("ลบลิสต์บนเซิร์ฟเวอร์ไม่สำเร็จ");
+      }
+    }
+
+    // --- Rendering ---
     function formatStacks(item) {
       return item.stackSize === 1 ? `${item.stacks} ถัง` : `${item.stacks} stack`;
     }
 
-    function updateSummary() {
-      const doneCount = checkedSet.size;
-      const totalCount = ITEMS.length;
-      const pct = Math.round((doneCount / totalCount) * 100);
+    function renderSavedLists() {
+      const container = document.getElementById("savedListsContainer");
+      const emptyEl = document.getElementById("emptyLibrary");
+      const lists = getSortedLists();
 
-      let remainingStacks = 0;
-      for (const item of ITEMS) {
-        if (!checkedSet.has(item.key)) remainingStacks += item.stacks;
+      container.innerHTML = "";
+      if (lists.length === 0) {
+        emptyEl.classList.remove("hidden");
+        return;
       }
+      emptyEl.classList.add("hidden");
+
+      const frag = document.createDocumentFragment();
+      for (const list of lists) {
+        const total = list.items.length;
+        const done = Object.keys(list.checked).length;
+        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+        const tab = document.createElement("div");
+        tab.setAttribute("role", "button");
+        tab.setAttribute("tabindex", "0");
+        tab.className = `list-tab${list.meta.id === activeListId ? " active" : ""}`;
+        tab.innerHTML = `
+          <div class="list-tab-head">
+            <span class="list-tab-name" title="${escapeHtml(list.meta.name)}">${escapeHtml(list.meta.name)}</span>
+            <div class="list-tab-actions">
+              <button type="button" class="icon-btn edit-btn" title="แก้ไขชื่อลิสต์" aria-label="แก้ไขชื่อลิสต์">${SVG_EDIT}</button>
+              <button type="button" class="icon-btn danger del-btn" title="ลบลิสต์" aria-label="ลบลิสต์">${SVG_DELETE}</button>
+            </div>
+          </div>
+          <div class="list-tab-meta">
+            <span>${done}/${total} ชนิด</span>
+            <span>${pct}%</span>
+          </div>
+          <div class="list-tab-bar">
+            <div class="list-tab-fill" style="width:${pct}%"></div>
+          </div>
+        `;
+
+        const selectTab = () => {
+          activeListId = list.meta.id;
+          searchQuery = "";
+          document.getElementById("searchInput").value = "";
+          saveLocalCache();
+          updateUrlHash();
+          renderAll();
+        };
+
+        tab.addEventListener("click", selectTab);
+        tab.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            selectTab();
+          }
+        });
+
+        tab.querySelector(".edit-btn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          openRenameModal(list.meta.id);
+        });
+
+        tab.querySelector(".del-btn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          openDeleteModal(list.meta.id);
+        });
+
+        frag.appendChild(tab);
+      }
+      container.appendChild(frag);
+    }
+
+    function renderActiveChecklist() {
+      const headerCard = document.getElementById("activeHeaderCard");
+      const tableCard = document.getElementById("activeTableCard");
+      const list = activeListId ? listsMap[activeListId] : null;
+
+      if (!list) {
+        headerCard.classList.add("hidden");
+        tableCard.classList.add("hidden");
+        document.title = "Litematica Material Checklist";
+        return;
+      }
+
+      headerCard.classList.remove("hidden");
+      tableCard.classList.remove("hidden");
+      document.title = `Checklist: ${list.meta.name}`;
+
+      document.getElementById("activeListTitle").textContent = `เช็คลิสต์วัสดุ: ${list.meta.name}`;
+      const filePart = list.meta.fileName ? ` • ไฟล์: ${list.meta.fileName}` : "";
+      document.getElementById("activeListSubtitle").textContent =
+        `${list.meta.totalItems.toLocaleString()} ชนิดไอเทม • รวม ${list.meta.totalCount.toLocaleString()} ชิ้น${filePart} • ปัดเศษขึ้นเป็น stack`;
+
+      // Progress
+      const totalCount = list.items.length;
+      let doneCount = 0;
+      let remainingStacks = 0;
+      for (const item of list.items) {
+        if (list.checked[item.key]) doneCount++;
+        else remainingStacks += item.stacks;
+      }
+      const pct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
       const shulkers = Math.ceil(remainingStacks / 27);
 
       document.getElementById("progressLabel").textContent =
@@ -728,27 +1511,24 @@
       document.getElementById("stackSummary").textContent =
         remainingStacks === 0
           ? "ครบทั้งหมดแล้ว!"
-          : `เหลือ ${remainingStacks} stack (~${shulkers} Shulker)`;
+          : `เหลือ ${remainingStacks.toLocaleString()} stack (~${shulkers.toLocaleString()} Shulker)`;
       document.getElementById("progressBar").style.width = `${pct}%`;
-    }
 
-    function renderList() {
+      // Filter & Sort
       const q = searchQuery.trim().toLowerCase();
-      let filtered = ITEMS.filter(item => {
-        const isDone = checkedSet.has(item.key);
+      const filtered = list.items.filter(item => {
+        const isDone = !!list.checked[item.key];
         if (currentFilter === "todo" && isDone) return false;
         if (currentFilter === "done" && !isDone) return false;
-        if (q && !item.name.toLowerCase().includes(q) && !item.key.includes(q)) {
-          return false;
-        }
+        if (q && !item.name.toLowerCase().includes(q) && !item.key.includes(q)) return false;
         return true;
       });
 
       filtered.sort((a, b) => {
         if (currentSort === "name_asc") return a.name.localeCompare(b.name);
         if (currentSort === "todo_first") {
-          const da = checkedSet.has(a.key) ? 1 : 0;
-          const db = checkedSet.has(b.key) ? 1 : 0;
+          const da = list.checked[a.key] ? 1 : 0;
+          const db = list.checked[b.key] ? 1 : 0;
           if (da !== db) return da - db;
           return b.count - a.count;
         }
@@ -767,7 +1547,7 @@
 
       const frag = document.createDocumentFragment();
       for (const item of filtered) {
-        const isDone = checkedSet.has(item.key);
+        const isDone = !!list.checked[item.key];
         const row = document.createElement("label");
         row.className = `list-row${isDone ? " done" : ""}`;
 
@@ -775,24 +1555,42 @@
           ? `<span class="badge">${item.stackSize}/stack</span>`
           : "";
 
+        const iconCandidates = getItemIconCandidates(item.name);
+
         row.innerHTML = `
           <input type="checkbox" ${isDone ? "checked" : ""} />
           <div class="item-name-wrap">
-            <span class="item-name">${item.name}</span>${badge}
+            <span class="item-icon-slot">
+              <img class="item-icon" src="${iconCandidates[0]}" alt="" loading="lazy" decoding="async" />
+              ${SVG_CUBE}
+            </span>
+            <div class="item-text-group">
+              <span class="item-name">${escapeHtml(item.name)}</span>${badge}
+            </div>
           </div>
           <span class="item-count">${item.count.toLocaleString()} ชิ้น</span>
-          <span class="item-sb">${item.sb}</span>
-          <span class="item-stacks">${formatStacks(item)}</span>
+          <span class="item-sb">${escapeHtml(item.sb)}</span>
+          <span class="item-stacks">${escapeHtml(formatStacks(item))}</span>
         `;
+
+        const img = row.querySelector(".item-icon");
+        let fallbackIdx = 0;
+        img.addEventListener("error", () => {
+          fallbackIdx++;
+          if (fallbackIdx < iconCandidates.length) {
+            img.src = iconCandidates[fallbackIdx];
+          } else {
+            img.parentElement.classList.add("fallback");
+          }
+        });
 
         row.querySelector("input").addEventListener("change", (e) => {
           const checked = e.target.checked;
-          if (checked) checkedSet.add(item.key);
-          else checkedSet.delete(item.key);
-          saveLocalState(true);
-          updateSummary();
-          renderList();
-          pushItemToggle(item.key, checked);
+          if (checked) list.checked[item.key] = true;
+          else delete list.checked[item.key];
+          saveLocalCache();
+          renderAll();
+          pushItemToggle(list.meta.id, item.key, checked);
         });
 
         frag.appendChild(row);
@@ -800,9 +1598,128 @@
       container.appendChild(frag);
     }
 
+    function renderAll() {
+      renderSavedLists();
+      renderActiveChecklist();
+    }
+
+    // --- Upload Modal Logic ---
+    const uploadModal = document.getElementById("uploadModal");
+    const dropzone = document.getElementById("dropzone");
+    const fileInput = document.getElementById("fileInput");
+    const listNameInput = document.getElementById("listNameInput");
+    const uploadPreview = document.getElementById("uploadPreview");
+    const confirmUploadBtn = document.getElementById("confirmUploadBtn");
+
+    function openUploadModal() {
+      pendingUpload = null;
+      fileInput.value = "";
+      listNameInput.value = "";
+      uploadPreview.className = "preview-box hidden";
+      uploadPreview.textContent = "";
+      confirmUploadBtn.disabled = true;
+      uploadModal.classList.add("open");
+    }
+
+    function closeUploadModal() {
+      uploadModal.classList.remove("open");
+    }
+
+    function handleSelectedFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = String(reader.result || "");
+        const parsed = parseLitematicaTxt(text, file.name);
+        if (parsed.items.length === 0) {
+          pendingUpload = null;
+          confirmUploadBtn.disabled = true;
+          uploadPreview.className = "preview-box error";
+          uploadPreview.textContent = "ไม่พบรายการไอเทมในไฟล์นี้ กรุณาตรวจสอบว่าเป็นไฟล์ .txt ที่ Export จาก Litematica";
+          return;
+        }
+        pendingUpload = {
+          fileName: file.name,
+          items: parsed.items,
+          totalCount: parsed.totalCount
+        };
+        if (!listNameInput.value.trim()) {
+          listNameInput.value = parsed.title;
+        }
+        uploadPreview.className = "preview-box ok";
+        uploadPreview.textContent =
+          `อ่านไฟล์สำเร็จ: ${file.name} • พบ ${parsed.items.length.toLocaleString()} ชนิดไอเทม (รวม ${parsed.totalCount.toLocaleString()} ชิ้น)`;
+        confirmUploadBtn.disabled = false;
+      };
+      reader.onerror = () => {
+        pendingUpload = null;
+        confirmUploadBtn.disabled = true;
+        uploadPreview.className = "preview-box error";
+        uploadPreview.textContent = "ไม่สามารถอ่านไฟล์ได้";
+      };
+      reader.readAsText(file, "UTF-8");
+    }
+
+    document.getElementById("openUploadBtn").addEventListener("click", openUploadModal);
+    document.getElementById("emptyUploadBtn").addEventListener("click", openUploadModal);
+    document.getElementById("closeUploadBtn").addEventListener("click", closeUploadModal);
+    document.getElementById("cancelUploadBtn").addEventListener("click", closeUploadModal);
+    uploadModal.addEventListener("click", (e) => {
+      if (e.target === uploadModal) closeUploadModal();
+    });
+
+    dropzone.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", (e) => {
+      if (e.target.files && e.target.files[0]) handleSelectedFile(e.target.files[0]);
+    });
+
+    dropzone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropzone.classList.add("dragover");
+    });
+    dropzone.addEventListener("dragleave", () => {
+      dropzone.classList.remove("dragover");
+    });
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropzone.classList.remove("dragover");
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleSelectedFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    confirmUploadBtn.addEventListener("click", async () => {
+      if (!pendingUpload) return;
+      const name = listNameInput.value.trim() || "Untitled List";
+      const id = generateListId();
+      const rawList = {
+        meta: {
+          id,
+          name,
+          fileName: pendingUpload.fileName,
+          createdAt: Date.now(),
+          totalItems: pendingUpload.items.length,
+          totalCount: pendingUpload.totalCount
+        },
+        items: pendingUpload.items,
+        checked: {}
+      };
+      const norm = normalizeList(id, rawList);
+      listsMap[id] = norm;
+      activeListId = id;
+      saveLocalCache();
+      updateUrlHash();
+      renderAll();
+      closeUploadModal();
+
+      const synced = await pushNewList(rawList);
+      if (synced) showToast(`บันทึกลิสต์ "${name}" แล้ว!`);
+    });
+
+    // --- Active List Controls ---
     document.getElementById("searchInput").addEventListener("input", (e) => {
       searchQuery = e.target.value;
-      renderList();
+      renderActiveChecklist();
     });
 
     document.querySelectorAll(".filter-btn").forEach(btn => {
@@ -810,40 +1727,146 @@
         currentFilter = btn.dataset.filter;
         document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        renderList();
+        renderActiveChecklist();
       });
     });
 
     document.getElementById("sortSelect").addEventListener("change", (e) => {
       currentSort = e.target.value;
-      renderList();
+      renderActiveChecklist();
+    });
+
+    // --- Rename & Delete Modals ---
+    const renameModal = document.getElementById("renameModal");
+    const renameInput = document.getElementById("renameInput");
+    const deleteModal = document.getElementById("deleteModal");
+    const deleteConfirmText = document.getElementById("deleteConfirmText");
+
+    function openRenameModal(listId) {
+      const list = listId ? listsMap[listId] : null;
+      if (!list) return;
+      modalTargetListId = listId;
+      renameInput.value = list.meta.name;
+      renameModal.classList.add("open");
+      setTimeout(() => {
+        renameInput.focus();
+        renameInput.select();
+      }, 20);
+    }
+
+    function closeRenameModal() {
+      renameModal.classList.remove("open");
+      modalTargetListId = null;
+    }
+
+    function submitRename() {
+      const list = modalTargetListId ? listsMap[modalTargetListId] : null;
+      const next = renameInput.value.trim();
+      if (!list || !next) return;
+      const targetId = list.meta.id;
+      if (next !== list.meta.name) {
+        list.meta.name = next;
+        saveLocalCache();
+        renderAll();
+        pushRenameList(targetId, next);
+        showToast(`เปลี่ยนชื่อเป็น "${next}" แล้ว`);
+      }
+      closeRenameModal();
+    }
+
+    function openDeleteModal(listId) {
+      const list = listId ? listsMap[listId] : null;
+      if (!list) return;
+      modalTargetListId = listId;
+      deleteConfirmText.textContent = `ต้องการลบลิสต์ "${list.meta.name}" (${list.items.length} ชนิดไอเทม) ถาวรใช่ไหม? การลบจะซิงค์ไปยังทุกเครื่องที่เปิดอยู่`;
+      deleteModal.classList.add("open");
+    }
+
+    function closeDeleteModal() {
+      deleteModal.classList.remove("open");
+      modalTargetListId = null;
+    }
+
+    function submitDelete() {
+      const list = modalTargetListId ? listsMap[modalTargetListId] : null;
+      if (!list) {
+        closeDeleteModal();
+        return;
+      }
+      const deletedId = list.meta.id;
+      const deletedName = list.meta.name;
+      delete listsMap[deletedId];
+      if (activeListId === deletedId) activeListId = null;
+      ensureValidActiveList();
+      saveLocalCache();
+      updateUrlHash();
+      renderAll();
+      closeDeleteModal();
+      pushDeleteList(deletedId);
+      showToast(`ลบลิสต์ "${deletedName}" แล้ว`);
+    }
+
+    document.getElementById("closeRenameBtn").addEventListener("click", closeRenameModal);
+    document.getElementById("cancelRenameBtn").addEventListener("click", closeRenameModal);
+    document.getElementById("confirmRenameBtn").addEventListener("click", submitRename);
+    renameInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") submitRename();
+    });
+    renameModal.addEventListener("click", (e) => {
+      if (e.target === renameModal) closeRenameModal();
+    });
+
+    document.getElementById("closeDeleteBtn").addEventListener("click", closeDeleteModal);
+    document.getElementById("cancelDeleteBtn").addEventListener("click", closeDeleteModal);
+    document.getElementById("confirmDeleteBtn").addEventListener("click", submitDelete);
+    deleteModal.addEventListener("click", (e) => {
+      if (e.target === deleteModal) closeDeleteModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeUploadModal();
+        closeRenameModal();
+        closeDeleteModal();
+      }
+    });
+
+    document.getElementById("renameListBtn").addEventListener("click", () => {
+      if (activeListId) openRenameModal(activeListId);
     });
 
     document.getElementById("resetBtn").addEventListener("click", () => {
-      if (checkedSet.size === 0) return;
-      checkedSet.clear();
-      saveLocalState(true);
-      updateSummary();
-      renderList();
-      pushResetAll();
+      const list = activeListId ? listsMap[activeListId] : null;
+      if (!list || Object.keys(list.checked).length === 0) return;
+      if (!confirm(`ต้องการรีเซ็ตการติ๊กทั้งหมดของลิสต์ "${list.meta.name}" ใช่ไหม?`)) return;
+      list.checked = {};
+      saveLocalCache();
+      renderAll();
+      pushResetList(list.meta.id);
       showToast("รีเซ็ตเช็คลิสต์แล้ว");
     });
 
+    document.getElementById("deleteListBtn").addEventListener("click", () => {
+      if (activeListId) openDeleteModal(activeListId);
+    });
+
     document.getElementById("shareLinkBtn").addEventListener("click", async () => {
-      saveLocalState(true);
+      updateUrlHash();
       try {
         await navigator.clipboard.writeText(window.location.href);
-        showToast(DB_URL ? "คัดลอกลิงก์เว็บแล้ว ส่งให้แฟนเปิดพร้อมกันได้เลย!" : "คัดลอกลิงก์ความคืบหน้าแล้ว ส่งให้แฟนได้เลย!");
+        showToast(DB_URL ? "คัดลอกลิงก์ลิสต์นี้แล้ว ส่งให้เปิดพร้อมกันได้เลย!" : "คัดลอกลิงก์แล้ว");
       } catch (_) {
         showToast("คัดลอกไม่สำเร็จ กรุณาก๊อป URL จากแถบด้านบน");
       }
     });
 
     document.getElementById("copyRemainingBtn").addEventListener("click", async () => {
-      const remaining = ITEMS.filter(i => !checkedSet.has(i.key));
+      const list = activeListId ? listsMap[activeListId] : null;
+      if (!list) return;
+      const remaining = list.items.filter(i => !list.checked[i.key]);
       const text = remaining.length === 0
-        ? "เตรียมของครบทุกอย่างแล้ว!"
-        : remaining.map(i => `- [ ] ${i.name}: ${formatStacks(i)} (${i.count} ชิ้น)`).join("\n");
+        ? `[${list.meta.name}] เตรียมของครบทุกอย่างแล้ว!`
+        : `[${list.meta.name}]\n` + remaining.map(i => `- [ ] ${i.name}: ${formatStacks(i)} (${i.count} ชิ้น)`).join("\n");
       try {
         await navigator.clipboard.writeText(text);
         showToast("คัดลอกรายการที่ยังขาดแล้ว!");
@@ -852,9 +1875,18 @@
       }
     });
 
-    loadLocalState();
-    updateSummary();
-    renderList();
+    window.addEventListener("hashchange", () => {
+      const hashId = readHashListId();
+      if (hashId && listsMap[hashId] && hashId !== activeListId) {
+        activeListId = hashId;
+        saveLocalCache();
+        renderAll();
+      }
+    });
+
+    // Boot
+    loadLocalCache();
+    renderAll();
     initRealtimeSync();
   </script>
 </body>
