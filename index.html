@@ -827,7 +827,7 @@
     </div>
 
     <p class="footnote">
-      * รองรับไฟล์ <code>.txt</code> จาก Litematica Material List (Export ASCII Table) | ซิงค์ลิสต์และการติ๊กแบบเรียลไทม์ผ่าน <code>FIREBASE_DB_URL</code> ที่ path <code>/lists</code>
+      * รองรับไฟล์ <code>.txt</code> จาก Litematica Material List (Export ASCII Table) | ซิงค์ลิสต์และการติ๊กแบบเรียลไทม์ผ่าน <code>FIREBASE_DB_URL</code> ที่ path <code>/checklist/v2_lists</code>
     </p>
   </div>
 
@@ -905,6 +905,7 @@
     const STORAGE_KEY = "mc_litematica_lists_v1";
     const ACTIVE_LIST_KEY = "mc_litematica_active_id_v1";
     const DB_URL = FIREBASE_DB_URL.trim().replace(/\/+$/, "");
+    const DB_LISTS_URL = DB_URL ? `${DB_URL}/checklist/v2_lists` : "";
 
     // State
     let listsMap = {}; // { [id]: { meta, items, checked } }
@@ -1307,10 +1308,10 @@
     }
 
     function initRealtimeSync() {
-      if (!DB_URL) return;
+      if (!DB_LISTS_URL) return;
       setSyncStatus(false, "กำลังเชื่อมต่อเรียลไทม์...");
       try {
-        const es = new EventSource(`${DB_URL}/lists.json`);
+        const es = new EventSource(`${DB_LISTS_URL}.json`);
         es.addEventListener("open", () => {
           setSyncStatus(true, "ออนไลน์ (เรียลไทม์)");
         });
@@ -1339,9 +1340,9 @@
     }
 
     async function pushNewList(listObj) {
-      if (!DB_URL) return true;
+      if (!DB_LISTS_URL) return true;
       try {
-        const res = await fetch(`${DB_URL}/lists/${encodeURIComponent(listObj.meta.id)}.json`, {
+        const res = await fetch(`${DB_LISTS_URL}/${encodeURIComponent(listObj.meta.id)}.json`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(listObj)
@@ -1355,9 +1356,9 @@
     }
 
     async function pushItemToggle(listId, key, isChecked) {
-      if (!DB_URL) return;
+      if (!DB_LISTS_URL) return;
       try {
-        await fetch(`${DB_URL}/lists/${encodeURIComponent(listId)}/checked/${encodeURIComponent(key)}.json`, {
+        await fetch(`${DB_LISTS_URL}/${encodeURIComponent(listId)}/checked/${encodeURIComponent(key)}.json`, {
           method: isChecked ? "PUT" : "DELETE",
           headers: { "Content-Type": "application/json" },
           body: isChecked ? "true" : undefined
@@ -1368,18 +1369,18 @@
     }
 
     async function pushResetList(listId) {
-      if (!DB_URL) return;
+      if (!DB_LISTS_URL) return;
       try {
-        await fetch(`${DB_URL}/lists/${encodeURIComponent(listId)}/checked.json`, { method: "DELETE" });
+        await fetch(`${DB_LISTS_URL}/${encodeURIComponent(listId)}/checked.json`, { method: "DELETE" });
       } catch (_) {
         showToast("รีเซ็ตบนเซิร์ฟเวอร์ไม่สำเร็จ");
       }
     }
 
     async function pushRenameList(listId, newName) {
-      if (!DB_URL) return;
+      if (!DB_LISTS_URL) return;
       try {
-        await fetch(`${DB_URL}/lists/${encodeURIComponent(listId)}/meta/name.json`, {
+        await fetch(`${DB_LISTS_URL}/${encodeURIComponent(listId)}/meta/name.json`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newName)
@@ -1390,9 +1391,9 @@
     }
 
     async function pushDeleteList(listId) {
-      if (!DB_URL) return;
+      if (!DB_LISTS_URL) return;
       try {
-        await fetch(`${DB_URL}/lists/${encodeURIComponent(listId)}.json`, { method: "DELETE" });
+        await fetch(`${DB_LISTS_URL}/${encodeURIComponent(listId)}.json`, { method: "DELETE" });
       } catch (_) {
         showToast("ลบลิสต์บนเซิร์ฟเวอร์ไม่สำเร็จ");
       }
